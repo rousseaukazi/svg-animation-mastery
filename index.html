@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg: #0a0a0f;
       --surface: #0f0f1a;
@@ -22,1867 +21,441 @@
       --text-muted: #6b6b8a;
       --border: rgba(255,255,255,0.06);
     }
-
     html { scroll-behavior: smooth; }
-
     body {
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
       line-height: 1.6;
-    }
-
-    /* ── SCROLL PROGRESS ── */
-    #scroll-progress {
-      position: fixed;
-      top: 0; left: 0;
-      height: 2px;
-      width: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
-      transform-origin: left;
-      transform: scaleX(0);
-      z-index: 1000;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed;
-      top: 2px; left: 0; right: 0;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      height: 56px;
-      background: rgba(10,10,15,0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-logo {
-      font-weight: 700;
-      font-size: 0.9rem;
-      letter-spacing: 0.05em;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 0.25rem;
-      list-style: none;
-      flex-wrap: wrap;
-    }
-
-    .nav-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.3rem 0.65rem;
-      border-radius: 6px;
-      transition: color 0.2s, background 0.2s;
-      letter-spacing: 0.03em;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
-      background: rgba(255,255,255,0.06);
-    }
-
-    /* ── SECTIONS ── */
-    section {
       min-height: 100vh;
-      position: relative;
-      overflow: hidden;
     }
 
-    .section-label {
-      position: absolute;
-      top: 80px; left: 2rem;
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      opacity: 0.7;
-      z-index: 10;
-    }
-
-    .section-content {
-      position: relative;
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 80px 2rem 4rem;
+    /* ── HEADER ── */
+    header {
       text-align: center;
+      padding: 5rem 2rem 3rem;
     }
-
-    h1 {
-      font-size: clamp(2.5rem, 8vw, 7rem);
-      font-weight: 900;
-      line-height: 1;
-      letter-spacing: -0.03em;
-    }
-
-    h2 {
-      font-size: clamp(1.8rem, 4vw, 3.5rem);
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
-    }
-
-    .subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.3rem);
-      color: var(--text-muted);
-      font-weight: 400;
-      max-width: 560px;
-      margin: 1rem auto 0;
-    }
-
-    .badge {
+    .site-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      background: rgba(108,99,255,0.15);
-      border: 1px solid rgba(108,99,255,0.3);
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.25);
       color: var(--accent);
       font-size: 0.7rem;
       font-weight: 600;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 0.35rem 0.8rem;
+      padding: 0.35rem 0.9rem;
       border-radius: 100px;
       margin-bottom: 1.5rem;
     }
-
-    .technique-tag {
-      display: inline-block;
-      background: rgba(0,240,255,0.1);
-      border: 1px solid rgba(0,240,255,0.2);
-      color: var(--accent2);
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 0.25rem 0.6rem;
-      border-radius: 4px;
-      margin: 0.2rem;
-    }
-
-    /* ── SECTION 1: HERO ── */
-    #hero {
-      background: var(--bg);
-    }
-
-    #hero-svg {
-      position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-    }
-
-    .hero-title {
-      background: linear-gradient(135deg, #fff 30%, rgba(108,99,255,0.9) 70%, rgba(0,240,255,0.9) 100%);
+    .site-title {
+      font-size: clamp(2.4rem, 7vw, 5.5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #fff 30%, rgba(108,99,255,0.95) 65%, rgba(0,240,255,0.9) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    .hero-cta {
-      margin-top: 2.5rem;
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .btn {
-      padding: 0.75rem 1.75rem;
-      border-radius: 10px;
-      font-size: 0.875rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: transform 0.2s, box-shadow 0.2s;
-      letter-spacing: 0.02em;
-    }
-
-    .btn:hover { transform: translateY(-2px); }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--accent), #8b84ff);
-      color: white;
-      border: none;
-      box-shadow: 0 4px 24px rgba(108,99,255,0.35);
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-
-    .btn-ghost:hover {
-      background: rgba(255,255,255,0.05);
-      border-color: rgba(255,255,255,0.15);
-    }
-
-    /* ── SECTION 2: CIRCUIT ── */
-    #circuit {
-      background: var(--bg);
-    }
-
-    #circuit-svg {
-      width: 100%;
-      max-width: 900px;
-      height: auto;
-    }
-
-    .circuit-info {
-      max-width: 600px;
-      margin-top: 2rem;
-    }
-
-    /* ── SECTION 3: MORPHING ── */
-    #morphing {
-      background: var(--surface);
-    }
-
-    .morphing-stage {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 3rem;
-      flex-wrap: wrap;
-      margin-top: 2rem;
-    }
-
-    .morph-label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+    .site-tagline {
+      margin-top: 1rem;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
       color: var(--text-muted);
-      margin-top: 0.5rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      margin: 2rem auto;
+      border-radius: 2px;
     }
 
-    .small-morph-group {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2rem;
+    /* ── GRID ── */
+    .grid-section {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem 6rem;
     }
-
-    /* ── SECTION 4: DATA VIZ ── */
-    #dataviz {
-      background: var(--bg);
-    }
-
-    .chart-container {
-      width: 100%;
-      max-width: 900px;
-      margin-top: 2rem;
-    }
-
-    .bar-chart-area {
-      display: flex;
-      align-items: flex-end;
-      gap: 1rem;
-      height: 240px;
-      padding: 0 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .bar-group {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100%;
-      justify-content: flex-end;
-    }
-
-    .bar-value {
-      font-size: 0.75rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-      color: var(--accent2);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .bar-outer {
-      width: 100%;
-      height: 200px;
-      display: flex;
-      align-items: flex-end;
-    }
-
-    .bar {
-      width: 100%;
-      border-radius: 6px 6px 0 0;
-      transform: scaleY(0);
-      transform-origin: bottom;
-    }
-
-    .bar-label {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      margin-top: 8px;
-      font-weight: 500;
-    }
-
-    /* ── SECTION 5: SPOTLIGHT ── */
-    #spotlight {
-      background: var(--bg);
-      cursor: none;
-    }
-
-    #spotlight-scene {
-      position: absolute;
-      inset: 0;
-    }
-
-    #spotlight-overlay {
-      position: absolute;
-      inset: 0;
-      background: var(--bg);
-      -webkit-mask-image: radial-gradient(circle 150px at var(--mx, -300px) var(--my, -300px), transparent 0%, transparent 40%, black 80%);
-      mask-image: radial-gradient(circle 150px at var(--mx, -300px) var(--my, -300px), transparent 0%, transparent 40%, black 80%);
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    #spotlight-hint {
-      position: absolute;
-      bottom: 8rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: 500;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      pointer-events: none;
-    }
-
-    .hint-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: pulse-dot 1.5s ease-in-out infinite;
-    }
-
-    @keyframes pulse-dot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.6); }
-    }
-
-    /* ── SECTION 6: ORBITAL ── */
-    #orbital {
-      background: var(--surface);
-    }
-
-    #orbital-svg {
-      width: 100%;
-      max-width: 600px;
-      height: auto;
-      aspect-ratio: 1;
-    }
-
-    /* ── SECTION 7: FILTERS ── */
-    #filters {
-      background: var(--bg);
-    }
-
-    .filter-grid {
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      width: 100%;
-      max-width: 1000px;
-      margin-top: 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
     }
 
-    .filter-card {
-      background: var(--surface2);
+    /* ── CARD ── */
+    .card {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 2rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .filter-card-label {
-      font-size: 0.65rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-muted);
-    }
-
-    /* ── SECTION 8: PARTICLES ── */
-    #particles {
-      background: var(--surface);
-    }
-
-    #particle-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-    }
-
-    .particles-content {
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
       position: relative;
-      z-index: 5;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(108,99,255,0.35);
+      box-shadow: 0 12px 40px rgba(108,99,255,0.12);
+    }
+    .card-preview {
+      height: 140px;
+      background: var(--surface2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .card-body {
+      padding: 1.25rem 1.25rem 1.5rem;
+    }
+    .card-num {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
+    .card-name {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+    .card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .card-arrow {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--accent);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .card:hover .card-arrow {
+      background: rgba(108,99,255,0.22);
+      transform: translateX(2px);
     }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--bg);
       border-top: 1px solid var(--border);
-      padding: 3rem 2rem;
+      padding: 2.5rem 2rem;
       text-align: center;
     }
-
     footer p {
       color: var(--text-muted);
-      font-size: 0.875rem;
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+    footer strong { color: var(--text); }
+
+    /* ─────────────────────────────────────
+       CARD PREVIEW ANIMATIONS (CSS only)
+       ───────────────────────────────────── */
+
+    /* Card 1 — Liquid Blobs */
+    .preview-blobs { position: relative; width: 100%; height: 100%; }
+    .preview-blobs circle { transform-origin: center; }
+    @keyframes pb1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(8px,-6px) scale(1.12)} }
+    @keyframes pb2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-10px,7px) scale(0.9)} }
+    @keyframes pb3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(5px,-9px) scale(1.08)} }
+    .pb1 { animation: pb1 3.2s ease-in-out infinite; }
+    .pb2 { animation: pb2 4.1s ease-in-out infinite; }
+    .pb3 { animation: pb3 5s ease-in-out infinite; }
+
+    /* Card 2 — Circuit */
+    @keyframes circ-draw { 0%{stroke-dashoffset:220} 60%{stroke-dashoffset:0} 90%{stroke-dashoffset:0} 100%{stroke-dashoffset:220} }
+    @keyframes circ-dot { 0%,40%{opacity:0;r:0} 60%,80%{opacity:1;r:4} 100%{opacity:0} }
+    .cp-anim { stroke-dasharray: 220; animation: circ-draw 3s ease-in-out infinite; }
+    .cp-anim2 { stroke-dasharray: 220; animation: circ-draw 3s ease-in-out infinite 0.3s; }
+    .cn-anim { animation: circ-dot 3s ease-in-out infinite; }
+
+    /* Card 3 — Shape Morphing */
+    @keyframes clip-morph {
+      0%,100% { clip-path: circle(38% at 50% 50%); background: rgba(108,99,255,0.7); }
+      25% { clip-path: polygon(50% 5%, 95% 50%, 50% 95%, 5% 50%); background: rgba(255,107,107,0.7); }
+      50% { clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%); background: rgba(0,240,255,0.7); }
+      75% { clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%); background: rgba(255,209,102,0.7); }
+    }
+    .morph-box {
+      width: 70px; height: 70px;
+      border-radius: 4px;
+      animation: clip-morph 4s ease-in-out infinite;
     }
 
-    footer a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    footer a:hover { text-decoration: underline; }
-
-    .footer-logo {
-      font-size: 1.2rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 1rem;
-    }
-
-    /* ── UTILITIES ── */
-    .gradient-text {
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .glow-accent {
-      text-shadow: 0 0 40px rgba(108,99,255,0.5);
-    }
-
-    .divider {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      margin: 1.5rem auto;
-      border-radius: 2px;
-    }
-
-    /* ── LINE CHART ── */
-    #line-chart-svg {
-      width: 100%;
-      max-width: 900px;
-      margin-top: 2rem;
-    }
-
-    /* ── SCROLL INDICATOR ── */
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2.5rem;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Card 4 — Data Viz bars */
+    @keyframes bar-grow { 0%,100%{transform:scaleY(0.15)} 50%{transform:scaleY(1)} }
+    .preview-bars {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.4rem;
-      color: var(--text-muted);
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      align-items: flex-end;
+      gap: 6px;
+      height: 80px;
+      padding: 0 8px;
     }
+    .pb { width: 22px; border-radius: 3px 3px 0 0; transform-origin: bottom; }
+    .pb:nth-child(1){height:65px;background:linear-gradient(to top,#6c63ff,#9b94ff);animation:bar-grow 2s ease-in-out infinite 0s;}
+    .pb:nth-child(2){height:50px;background:linear-gradient(to top,#00f0ff,#7efff5);animation:bar-grow 2s ease-in-out infinite 0.15s;}
+    .pb:nth-child(3){height:42px;background:linear-gradient(to top,#ff6b6b,#ff9999);animation:bar-grow 2s ease-in-out infinite 0.3s;}
+    .pb:nth-child(4){height:58px;background:linear-gradient(to top,#ffd166,#ffe8a3);animation:bar-grow 2s ease-in-out infinite 0.45s;}
+    .pb:nth-child(5){height:36px;background:linear-gradient(to top,#06d6a0,#7effd4);animation:bar-grow 2s ease-in-out infinite 0.6s;}
 
-    .scroll-mouse {
-      width: 22px;
-      height: 36px;
-      border: 2px solid rgba(255,255,255,0.2);
-      border-radius: 12px;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      padding-top: 6px;
+    /* Card 5 — Spotlight */
+    @keyframes spot-pulse {
+      0%,100%{r:18;opacity:0.3}
+      50%{r:30;opacity:0.8}
     }
+    @keyframes spot-ring {
+      0%{r:20;opacity:0.5}
+      100%{r:45;opacity:0}
+    }
+    .spot-core { animation: spot-pulse 2.5s ease-in-out infinite; }
+    .spot-ring { animation: spot-ring 2s ease-out infinite; }
+    .spot-ring2 { animation: spot-ring 2s ease-out infinite 1s; }
 
-    .scroll-mouse::after {
-      content: '';
-      width: 3px;
-      height: 8px;
-      background: var(--accent);
-      border-radius: 2px;
-      animation: scroll-mouse 2s ease-in-out infinite;
-    }
+    /* Card 6 — Orbital */
+    @keyframes orbit-planet1 { from{transform:rotate(0deg) translateX(38px)} to{transform:rotate(360deg) translateX(38px)} }
+    @keyframes orbit-planet2 { from{transform:rotate(120deg) translateX(52px)} to{transform:rotate(480deg) translateX(52px)} }
+    @keyframes sun-pulse { 0%,100%{r:10} 50%{r:12} }
+    .orbit-system { transform-origin: center; }
+    .orbit-p1 { transform-origin: 60px 60px; animation: orbit-planet1 3s linear infinite; }
+    .orbit-p2 { transform-origin: 60px 60px; animation: orbit-planet2 5s linear infinite; }
+    .orbit-sun { animation: sun-pulse 2s ease-in-out infinite; }
 
-    @keyframes scroll-mouse {
-      0% { opacity: 1; transform: translateY(0); }
-      100% { opacity: 0; transform: translateY(10px); }
-    }
+    /* Card 7 — Filters */
+    @keyframes blur-pulse { 0%,100%{filter:blur(0px)} 50%{filter:blur(3px)} }
+    @keyframes glow-anim { 0%,100%{filter:drop-shadow(0 0 2px #06d6a0)} 50%{filter:drop-shadow(0 0 10px #06d6a0) drop-shadow(0 0 20px #00f0ff)} }
+    .filter-text-anim { animation: blur-pulse 2.5s ease-in-out infinite; fill: #06d6a0; }
+    .filter-hex { animation: glow-anim 2s ease-in-out infinite; }
 
-    /* Responsive */
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .filter-grid { grid-template-columns: 1fr; }
-    }
+    /* Card 8 — Particles */
+    @keyframes dot-drift1 { 0%{transform:translate(0,0)} 25%{transform:translate(10px,-8px)} 50%{transform:translate(-5px,12px)} 75%{transform:translate(15px,5px)} 100%{transform:translate(0,0)} }
+    @keyframes dot-drift2 { 0%{transform:translate(0,0)} 33%{transform:translate(-12px,6px)} 66%{transform:translate(8px,-10px)} 100%{transform:translate(0,0)} }
+    @keyframes dot-drift3 { 0%{transform:translate(0,0)} 50%{transform:translate(6px,14px)} 100%{transform:translate(0,0)} }
+    .pd1 { animation: dot-drift1 4s ease-in-out infinite; }
+    .pd2 { animation: dot-drift2 5.5s ease-in-out infinite; }
+    .pd3 { animation: dot-drift3 3.8s ease-in-out infinite; }
+    .pd4 { animation: dot-drift1 6s ease-in-out infinite 1s; }
+    .pd5 { animation: dot-drift2 4.5s ease-in-out infinite 2s; }
+    .pd6 { animation: dot-drift3 5s ease-in-out infinite 0.5s; }
+    .pd7 { animation: dot-drift1 3.5s ease-in-out infinite 1.5s; }
+    .pd8 { animation: dot-drift2 4.8s ease-in-out infinite 0.8s; }
   </style>
 </head>
 <body>
 
-<!-- SCROLL PROGRESS -->
-<div id="scroll-progress"></div>
+<header>
+  <div class="site-eyebrow">✦ Interactive Reference</div>
+  <h1 class="site-title">SVG Animation<br>Mastery</h1>
+  <p class="site-tagline">Eight techniques. Infinite applications.</p>
+  <div class="divider"></div>
+</header>
 
-<!-- NAV -->
-<nav>
-  <div class="nav-logo">SVG Mastery</div>
-  <ul class="nav-links">
-    <li><a href="#hero">Hero</a></li>
-    <li><a href="#circuit">Circuit</a></li>
-    <li><a href="#morphing">Morphing</a></li>
-    <li><a href="#dataviz">Charts</a></li>
-    <li><a href="#spotlight">Spotlight</a></li>
-    <li><a href="#orbital">Orbital</a></li>
-    <li><a href="#filters">Filters</a></li>
-    <li><a href="#particles">Particles</a></li>
-  </ul>
-</nav>
+<main class="grid-section">
+  <div class="card-grid">
 
-<!-- ════════════════════════════════════════════════════════
-     SECTION 1 · HERO — Liquid Morphing Background
-     ════════════════════════════════════════════════════════ -->
-<section id="hero">
-  <svg id="hero-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <defs>
-      <filter id="blob-filter" x="-30%" y="-30%" width="160%" height="160%">
-        <feTurbulence id="hero-turb" type="fractalNoise" baseFrequency="0.008 0.010"
-          numOctaves="4" seed="2" result="noise"/>
-        <feDisplacementMap in="SourceGraphic" in2="noise" scale="80"
-          xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
-    </defs>
-    <g filter="url(#blob-filter)">
-      <circle id="blob1" cx="20%" cy="30%" r="260" fill="#6c63ff" opacity="0.55"/>
-      <circle id="blob2" cx="75%" cy="25%" r="220" fill="#00f0ff" opacity="0.40"/>
-      <circle id="blob3" cx="55%" cy="70%" r="300" fill="#ff6b6b" opacity="0.35"/>
-      <circle id="blob4" cx="15%" cy="75%" r="190" fill="#ffd166" opacity="0.30"/>
-    </g>
-  </svg>
-
-  <div class="section-content">
-    <div class="badge">✦ Interactive Reference</div>
-    <h1 class="hero-title">SVG Animation<br>Mastery</h1>
-    <p class="subtitle">8 advanced techniques — from liquid morphing to particle systems. Every animation is GPU-composited, performant, and production-ready.</p>
-    <div class="hero-cta">
-      <a href="#circuit" class="btn btn-primary">Explore Techniques</a>
-      <a href="#filters" class="btn btn-ghost">View Filter Gallery</a>
-    </div>
-  </div>
-
-  <div class="scroll-indicator">
-    <div class="scroll-mouse"></div>
-    <span>Scroll</span>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════
-     SECTION 2 · PATH DRAWING — Circuit Network
-     ════════════════════════════════════════════════════════ -->
-<section id="circuit">
-  <span class="section-label">02 — stroke-dashoffset</span>
-  <div class="section-content">
-    <div class="badge" style="--accent:#00f0ff;background:rgba(0,240,255,0.1);border-color:rgba(0,240,255,0.25)">⚡ Path Drawing</div>
-    <h2>Circuit <span class="gradient-text">Network</span></h2>
-    <p class="subtitle">SVG paths reveal themselves by animating <code style="color:var(--accent2)">stroke-dashoffset</code> from full path length to zero. Staggered with GSAP, glowing with SVG filters.</p>
-
-    <svg id="circuit-svg" viewBox="0 0 900 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Circuit diagram">
-      <defs>
-        <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="3" result="blur"/>
-          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-        </filter>
-        <filter id="neon-glow-strong" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="6" result="blur1"/>
-          <feGaussianBlur stdDeviation="2" result="blur2"/>
-          <feMerge><feMergeNode in="blur1"/><feMergeNode in="blur2"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-
-      <!-- Main circuit paths -->
-      <g class="circuit-paths" filter="url(#neon-glow)" stroke="#00f0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Horizontal backbone -->
-        <path class="cp" d="M 50 250 H 200"/>
-        <path class="cp" d="M 250 250 H 400"/>
-        <path class="cp" d="M 450 250 H 600"/>
-        <path class="cp" d="M 650 250 H 850"/>
-        <!-- Vertical spurs -->
-        <path class="cp" d="M 200 250 V 100"/>
-        <path class="cp" d="M 200 250 V 400"/>
-        <path class="cp" d="M 450 250 V 120"/>
-        <path class="cp" d="M 450 250 V 380"/>
-        <path class="cp" d="M 650 250 V 150"/>
-        <path class="cp" d="M 650 250 V 350"/>
-        <!-- Branch paths -->
-        <path class="cp" d="M 200 100 H 350 V 50 H 550"/>
-        <path class="cp" d="M 200 400 H 320 V 450 H 550 V 420"/>
-        <path class="cp" d="M 450 120 H 600 V 80 H 780"/>
-        <path class="cp" d="M 650 150 H 780 V 100"/>
-        <path class="cp" d="M 550 50 H 650 V 150"/>
-        <path class="cp" d="M 650 350 H 750 V 420 H 600"/>
-        <!-- Diagonal signal paths -->
-        <path class="cp" d="M 100 250 V 150 H 180"/>
-        <path class="cp" d="M 350 250 V 320 H 440"/>
-        <path class="cp" d="M 780 100 H 850 V 200"/>
-      </g>
-
-      <!-- Junction nodes -->
-      <g class="circuit-nodes" filter="url(#neon-glow-strong)">
-        <circle class="cn" cx="200" cy="250" r="5" fill="#00f0ff"/>
-        <circle class="cn" cx="450" cy="250" r="5" fill="#00f0ff"/>
-        <circle class="cn" cx="650" cy="250" r="5" fill="#00f0ff"/>
-        <circle class="cn" cx="200" cy="100" r="4" fill="#7efff5"/>
-        <circle class="cn" cx="200" cy="400" r="4" fill="#7efff5"/>
-        <circle class="cn" cx="450" cy="120" r="4" fill="#7efff5"/>
-        <circle class="cn" cx="450" cy="380" r="4" fill="#7efff5"/>
-        <circle class="cn" cx="650" cy="150" r="4" fill="#7efff5"/>
-        <circle class="cn" cx="650" cy="350" r="4" fill="#7efff5"/>
-        <circle class="cn" cx="550" cy="50" r="4" fill="#00f0ff"/>
-        <circle class="cn" cx="780" cy="100" r="4" fill="#7efff5"/>
-        <circle class="cn" cx="350" cy="50" r="3" fill="#7efff5"/>
-        <circle class="cn" cx="320" cy="400" r="3" fill="#7efff5"/>
-        <!-- Endpoint caps -->
-        <rect class="cn" x="840" y="243" width="14" height="14" rx="2" fill="none" stroke="#00f0ff" stroke-width="1.5"/>
-        <rect class="cn" x="40" y="243" width="14" height="14" rx="2" fill="none" stroke="#00f0ff" stroke-width="1.5"/>
-      </g>
-    </svg>
-
-    <div class="circuit-info">
-      <div>
-        <span class="technique-tag">stroke-dasharray</span>
-        <span class="technique-tag">stroke-dashoffset</span>
-        <span class="technique-tag">getTotalLength()</span>
-        <span class="technique-tag">SVG feGaussianBlur</span>
-        <span class="technique-tag">GSAP stagger</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════
-     SECTION 3 · SHAPE MORPHING — Continuous Transform
-     ════════════════════════════════════════════════════════ -->
-<section id="morphing">
-  <span class="section-label">03 — path morphing</span>
-  <div class="section-content">
-    <div class="badge" style="background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.3);color:#ff6b6b">◈ Shape Morphing</div>
-    <h2>Path <span style="color:#ff6b6b">Morphing</span></h2>
-    <p class="subtitle">Smooth continuous morphing by tweening the <code style="color:#ffd166">d</code> attribute. Every shape uses identical cubic bezier command counts so GSAP can interpolate flawlessly.</p>
-
-    <div class="morphing-stage">
-      <!-- Main morph shape -->
-      <div>
-        <svg id="main-morph-svg" viewBox="0 0 300 300" width="280" height="280">
+    <!-- Card 1: Liquid Morphing -->
+    <a href="t1.html" class="card">
+      <div class="card-preview">
+        <svg class="preview-blobs" viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <radialGradient id="morph-grad" cx="50%" cy="50%" r="50%">
-              <stop id="morph-stop1" offset="0%" stop-color="#ff6b6b"/>
-              <stop id="morph-stop2" offset="100%" stop-color="#6c63ff" stop-opacity="0.5"/>
+            <filter id="goo">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+              <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -9" result="goo"/>
+            </filter>
+          </defs>
+          <g filter="url(#goo)">
+            <circle class="pb1" cx="65"  cy="60"  r="38" fill="#6c63ff" opacity="0.75"/>
+            <circle class="pb2" cx="130" cy="50"  r="30" fill="#00f0ff" opacity="0.65"/>
+            <circle class="pb3" cx="105" cy="95"  r="34" fill="#ff6b6b" opacity="0.55"/>
+          </g>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-num">01 — feTurbulence</div>
+        <div class="card-name">Liquid Morphing</div>
+        <p class="card-desc">Organic blobs driven by feTurbulence displacement. Gooey filter creates the liquid merging effect.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- Card 2: Circuit Drawing -->
+    <a href="t2.html" class="card">
+      <div class="card-preview">
+        <svg viewBox="0 0 200 140" xmlns="http://www.w3.org/2000/svg" fill="none">
+          <g stroke="#00f0ff" stroke-width="1.8" stroke-linecap="round">
+            <path class="cp-anim"  d="M 20 70 H 70 V 35 H 140 V 70 H 180"/>
+            <path class="cp-anim2" d="M 70 70 V 105 H 140 V 70"/>
+          </g>
+          <circle class="cn-anim" cx="70"  cy="70"  r="4" fill="#00f0ff"/>
+          <circle class="cn-anim" cx="140" cy="70"  r="4" fill="#00f0ff" style="animation-delay:0.4s"/>
+          <circle class="cn-anim" cx="70"  cy="35"  r="3" fill="#7efff5" style="animation-delay:0.8s"/>
+          <circle class="cn-anim" cx="140" cy="35"  r="3" fill="#7efff5" style="animation-delay:1.2s"/>
+        </svg>
+      </div>
+      <div class="card-body">
+        <div class="card-num">02 — stroke-dashoffset</div>
+        <div class="card-name">Circuit Drawing</div>
+        <p class="card-desc">SVG paths reveal themselves by animating stroke-dashoffset to zero. Staggered with GSAP glow filters.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- Card 3: Shape Morphing -->
+    <a href="t3.html" class="card">
+      <div class="card-preview">
+        <div class="morph-box"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-num">03 — attr tween</div>
+        <div class="card-name">Shape Morphing</div>
+        <p class="card-desc">Smooth morphing by tweening SVG path d attribute. Identical bezier command counts enable flawless interpolation.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- Card 4: Data Viz -->
+    <a href="t4.html" class="card">
+      <div class="card-preview">
+        <div class="preview-bars">
+          <div class="pb"></div>
+          <div class="pb"></div>
+          <div class="pb"></div>
+          <div class="pb"></div>
+          <div class="pb"></div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="card-num">04 — ScrollTrigger</div>
+        <div class="card-name">Scroll Data Viz</div>
+        <p class="card-desc">Bars animate with GPU-composited scaleY on scroll. Counters race to values. Line draws via stroke-dashoffset.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
+
+    <!-- Card 5: Spotlight -->
+    <a href="t5.html" class="card">
+      <div class="card-preview">
+        <svg viewBox="0 0 120 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="sgrd" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ff6b6b" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#ff6b6b" stop-opacity="0"/>
             </radialGradient>
-            <filter id="morph-glow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="8" result="blur"/>
-              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
           </defs>
-          <path id="main-morph" fill="url(#morph-grad)" filter="url(#morph-glow)" opacity="0.9"
-            d="M 150 40
-               C 190 40 230 80 240 120
-               C 250 160 240 200 220 230
-               C 200 260 170 270 150 260
-               C 130 270 100 260 80 230
-               C 60 200 50 160 60 120
-               C 70 80 110 40 150 40 Z"/>
+          <circle class="spot-core" cx="60" cy="40" r="18" fill="url(#sgrd)"/>
+          <circle class="spot-ring"  cx="60" cy="40" r="20" fill="none" stroke="#ff6b6b" stroke-width="1" opacity="0.5"/>
+          <circle class="spot-ring2" cx="60" cy="40" r="20" fill="none" stroke="#ff6b6b" stroke-width="1" opacity="0.5"/>
         </svg>
-        <div class="morph-label" id="morph-shape-label">Circle</div>
       </div>
-
-      <!-- Info panel -->
-      <div style="max-width:280px;text-align:left">
-        <h3 style="margin-bottom:1rem;color:#ffd166">How it works</h3>
-        <p style="font-size:0.875rem;color:var(--text-muted);line-height:1.7">
-          Each morph target has <strong style="color:var(--text)">exactly 6 cubic bezier (C) commands</strong>.
-          GSAP's attr tween interpolates between the <code style="color:#ffd166">d</code> attribute strings,
-          smoothly blending control points to create organic transitions.
-        </p>
-        <div style="margin-top:1.5rem">
-          <span class="technique-tag" style="border-color:rgba(255,107,107,0.3);color:#ff6b6b;background:rgba(255,107,107,0.1)">attr tween</span>
-          <span class="technique-tag" style="border-color:rgba(255,107,107,0.3);color:#ff6b6b;background:rgba(255,107,107,0.1)">cubic bezier</span>
-          <span class="technique-tag" style="border-color:rgba(255,107,107,0.3);color:#ff6b6b;background:rgba(255,107,107,0.1)">infinite loop</span>
-        </div>
+      <div class="card-body">
+        <div class="card-num">05 — CSS mask-image</div>
+        <div class="card-name">Mouse Spotlight</div>
+        <p class="card-desc">CSS mask-image with a radial gradient follows your cursor, revealing a hidden constellation beneath the overlay.</p>
+        <div class="card-arrow">→</div>
       </div>
-    </div>
+    </a>
 
-    <!-- Small morphing shapes -->
-    <div class="small-morph-group">
-      <svg viewBox="0 0 100 100" width="90" height="90">
-        <path id="small-morph-1" fill="#6c63ff" opacity="0.8"
-          d="M 50 15 C 65 15 80 30 80 50 C 80 65 65 80 50 85 C 35 80 20 65 20 50 C 20 30 35 15 50 15 Z"/>
-      </svg>
-      <svg viewBox="0 0 100 100" width="90" height="90">
-        <path id="small-morph-2" fill="#00f0ff" opacity="0.7"
-          d="M 50 15 C 62 15 78 30 78 50 C 78 65 62 78 50 85 C 38 78 22 65 22 50 C 22 30 38 15 50 15 Z"/>
-      </svg>
-      <svg viewBox="0 0 100 100" width="90" height="90">
-        <path id="small-morph-3" fill="#ffd166" opacity="0.7"
-          d="M 50 15 C 64 15 79 29 79 50 C 79 66 64 79 50 85 C 36 79 21 66 21 50 C 21 29 36 15 50 15 Z"/>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════
-     SECTION 4 · SCROLL DATA VIZ
-     ════════════════════════════════════════════════════════ -->
-<section id="dataviz">
-  <span class="section-label">04 — scroll-driven</span>
-  <div class="section-content">
-    <div class="badge">📊 Data Visualization</div>
-    <h2>Scroll-Driven <span class="gradient-text">Charts</span></h2>
-    <p class="subtitle">Bars animate with GPU-composited <code style="color:var(--accent2)">scaleY()</code>. Counters race to their values. Line draws via <code style="color:var(--accent2)">stroke-dashoffset</code> — all ScrollTrigger-driven.</p>
-
-    <div class="chart-container">
-      <!-- Bar chart -->
-      <div class="bar-chart-area" id="bar-chart">
-        <div class="bar-group">
-          <div class="bar-value" id="bv0">0</div>
-          <div class="bar-outer">
-            <div class="bar" id="bar0" style="height:180px;background:linear-gradient(to top,#6c63ff,#9b94ff)"></div>
-          </div>
-          <div class="bar-label">React</div>
-        </div>
-        <div class="bar-group">
-          <div class="bar-value" id="bv1">0</div>
-          <div class="bar-outer">
-            <div class="bar" id="bar1" style="height:145px;background:linear-gradient(to top,#00f0ff,#7efff5)"></div>
-          </div>
-          <div class="bar-label">Vue</div>
-        </div>
-        <div class="bar-group">
-          <div class="bar-value" id="bv2">0</div>
-          <div class="bar-outer">
-            <div class="bar" id="bar2" style="height:130px;background:linear-gradient(to top,#ff6b6b,#ff9999)"></div>
-          </div>
-          <div class="bar-label">Svelte</div>
-        </div>
-        <div class="bar-group">
-          <div class="bar-value" id="bv3">0</div>
-          <div class="bar-outer">
-            <div class="bar" id="bar3" style="height:160px;background:linear-gradient(to top,#ffd166,#ffe8a3)"></div>
-          </div>
-          <div class="bar-label">Angular</div>
-        </div>
-        <div class="bar-group">
-          <div class="bar-value" id="bv4">0</div>
-          <div class="bar-outer">
-            <div class="bar" id="bar4" style="height:115px;background:linear-gradient(to top,#06d6a0,#7effd4)"></div>
-          </div>
-          <div class="bar-label">Solid</div>
-        </div>
-        <div class="bar-group">
-          <div class="bar-value" id="bv5">0</div>
-          <div class="bar-outer">
-            <div class="bar" id="bar5" style="height:95px;background:linear-gradient(to top,#f77f00,#ffb347)"></div>
-          </div>
-          <div class="bar-label">Qwik</div>
-        </div>
-        <div class="bar-group">
-          <div class="bar-value" id="bv6">0</div>
-          <div class="bar-outer">
-            <div class="bar" id="bar6" style="height:108px;background:linear-gradient(to top,#e040fb,#f48ffd)"></div>
-          </div>
-          <div class="bar-label">Preact</div>
-        </div>
-      </div>
-      <div style="text-align:right;font-size:0.65rem;color:var(--text-muted);margin-top:4px">★ Weekly downloads (millions)</div>
-
-      <!-- Line chart SVG -->
-      <svg id="line-chart-svg" viewBox="0 0 900 220" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-top:2.5rem">
-        <defs>
-          <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#6c63ff"/>
-            <stop offset="50%" stop-color="#00f0ff"/>
-            <stop offset="100%" stop-color="#ff6b6b"/>
-          </linearGradient>
-          <filter id="line-glow">
-            <feGaussianBlur stdDeviation="3" result="b"/>
-            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-          </filter>
-        </defs>
-        <!-- Grid lines -->
-        <line x1="40" y1="20" x2="40" y2="190" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-        <line x1="40" y1="190" x2="870" y2="190" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
-        <line x1="40" y1="140" x2="870" y2="140" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
-        <line x1="40" y1="90" x2="870" y2="90" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
-        <line x1="40" y1="40" x2="870" y2="40" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
-        <!-- Y labels -->
-        <text x="28" y="194" font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">0</text>
-        <text x="28" y="144" font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">25</text>
-        <text x="28" y="94"  font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">50</text>
-        <text x="28" y="44"  font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">75</text>
-        <!-- X labels -->
-        <text x="120" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Jan</text>
-        <text x="230" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Feb</text>
-        <text x="340" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Mar</text>
-        <text x="450" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Apr</text>
-        <text x="560" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">May</text>
-        <text x="670" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Jun</text>
-        <text x="780" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Jul</text>
-        <!-- The line -->
-        <path id="line-path" stroke="url(#line-grad)" stroke-width="2.5" filter="url(#line-glow)"
-          d="M 120 160 C 150 155 180 130 230 120 C 270 112 300 95 340 85 C 375 76 410 70 450 60 C 490 50 520 48 560 42 C 600 36 635 40 670 55 C 705 69 740 80 780 72"/>
-        <!-- Data points -->
-        <circle class="line-dot" cx="120" cy="160" r="5" fill="#6c63ff" opacity="0"/>
-        <circle class="line-dot" cx="230" cy="120" r="5" fill="#8080ff" opacity="0"/>
-        <circle class="line-dot" cx="340" cy="85"  r="5" fill="#40c8e0" opacity="0"/>
-        <circle class="line-dot" cx="450" cy="60"  r="5" fill="#00f0ff" opacity="0"/>
-        <circle class="line-dot" cx="560" cy="42"  r="5" fill="#20e0b0" opacity="0"/>
-        <circle class="line-dot" cx="670" cy="55"  r="5" fill="#60d090" opacity="0"/>
-        <circle class="line-dot" cx="780" cy="72"  r="5" fill="#ff6b6b" opacity="0"/>
-      </svg>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════
-     SECTION 5 · MOUSE SPOTLIGHT — Interactive Reveal
-     ════════════════════════════════════════════════════════ -->
-<section id="spotlight">
-  <span class="section-label" style="z-index:15">05 — mask reveal</span>
-
-  <!-- Hidden scene -->
-  <svg id="spotlight-scene" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <!-- Stars -->
-    <g id="star-field"></g>
-    <!-- Constellation lines -->
-    <g id="constellation-lines" stroke="#6c63ff" stroke-width="0.8" opacity="0.6"></g>
-    <!-- Geometric grid -->
-    <g stroke="rgba(108,99,255,0.15)" stroke-width="0.5" fill="none">
-      <line x1="0" y1="270" x2="1920" y2="270"/>
-      <line x1="0" y1="540" x2="1920" y2="540"/>
-      <line x1="0" y1="810" x2="1920" y2="810"/>
-      <line x1="480" y1="0" x2="480" y2="1080"/>
-      <line x1="960" y1="0" x2="960" y2="1080"/>
-      <line x1="1440" y1="0" x2="1440" y2="1080"/>
-    </g>
-    <!-- Floating text elements in the hidden scene -->
-    <text x="960" y="400" font-size="80" font-family="Inter,sans-serif" font-weight="900" fill="rgba(108,99,255,0.4)" text-anchor="middle" letter-spacing="-2">REVEAL</text>
-    <text x="960" y="520" font-size="28" font-family="Inter,sans-serif" fill="rgba(0,240,255,0.3)" text-anchor="middle">the hidden layer</text>
-    <!-- Geometric shapes -->
-    <polygon points="960,200 1020,280 940,280" fill="none" stroke="rgba(0,240,255,0.4)" stroke-width="1.5"/>
-    <circle cx="400" cy="350" r="60" fill="none" stroke="rgba(255,107,107,0.3)" stroke-width="1.5"/>
-    <circle cx="1500" cy="700" r="80" fill="none" stroke="rgba(108,99,255,0.3)" stroke-width="1.5"/>
-    <rect x="800" y="600" width="80" height="80" rx="8" fill="none" stroke="rgba(255,209,102,0.35)" stroke-width="1.5" transform="rotate(20,840,640)"/>
-  </svg>
-
-  <!-- Dark overlay with mask -->
-  <div id="spotlight-overlay"></div>
-
-  <!-- Section label and instructions -->
-  <div class="section-content" style="pointer-events:none">
-    <div class="badge" style="background:rgba(255,107,107,0.1);border-color:rgba(255,107,107,0.25);color:#ff6b6b">👁 Interactive</div>
-    <h2 style="color:#ff6b6b">Mouse <span style="color:var(--text)">Spotlight</span></h2>
-    <p class="subtitle">CSS <code style="color:#ff6b6b">mask-image</code> with a radial gradient follows your cursor, revealing a hidden constellation scene beneath a solid overlay.</p>
-    <div style="margin-top:1rem">
-      <span class="technique-tag" style="border-color:rgba(255,107,107,0.3);color:#ff6b6b;background:rgba(255,107,107,0.1)">CSS mask-image</span>
-      <span class="technique-tag" style="border-color:rgba(255,107,107,0.3);color:#ff6b6b;background:rgba(255,107,107,0.1)">CSS custom properties</span>
-      <span class="technique-tag" style="border-color:rgba(255,107,107,0.3);color:#ff6b6b;background:rgba(255,107,107,0.1)">requestAnimationFrame</span>
-    </div>
-  </div>
-
-  <div id="spotlight-hint">
-    <div class="hint-dot"></div>
-    Move your cursor to reveal the scene
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════
-     SECTION 6 · ORBITAL SYSTEM — Motion Along Path
-     ════════════════════════════════════════════════════════ -->
-<section id="orbital">
-  <span class="section-label">06 — motionpath</span>
-  <div class="section-content">
-    <div class="badge" style="background:rgba(255,209,102,0.1);border-color:rgba(255,209,102,0.3);color:#ffd166">☀ Orbital System</div>
-    <h2>Motion <span style="color:#ffd166">Along Path</span></h2>
-    <p class="subtitle">Planets orbit a central sun using GSAP's <code style="color:#ffd166">MotionPathPlugin</code>. Each world follows an invisible SVG ellipse at its own speed and inclination.</p>
-
-    <svg id="orbital-svg" viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg" aria-label="Orbital system">
-      <defs>
-        <filter id="sun-glow" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation="12" result="b1"/>
-          <feGaussianBlur stdDeviation="4" result="b2"/>
-          <feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="planet-glow" x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="4" result="b"/>
-          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <radialGradient id="sun-grad" cx="40%" cy="35%" r="60%">
-          <stop offset="0%" stop-color="#fff7d6"/>
-          <stop offset="40%" stop-color="#ffd166"/>
-          <stop offset="100%" stop-color="#ff6b00"/>
-        </radialGradient>
-      </defs>
-
-      <!-- Orbit paths (invisible — used by MotionPathPlugin) -->
-      <ellipse id="orbit1" cx="0" cy="0" rx="80"  ry="40"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-      <ellipse id="orbit2" cx="0" cy="0" rx="130" ry="65"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-      <ellipse id="orbit3" cx="0" cy="0" rx="175" ry="90"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-      <ellipse id="orbit4" cx="0" cy="0" rx="220" ry="115" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-      <ellipse id="orbit5" cx="0" cy="0" rx="260" ry="140" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
-
-      <!-- Sun -->
-      <circle id="sun" cx="0" cy="0" r="28" fill="url(#sun-grad)" filter="url(#sun-glow)"/>
-
-      <!-- Planet trail groups (rendered behind planets) -->
-      <g id="trails" opacity="0.25">
-        <circle id="trail1a" r="6"  fill="#00f0ff" opacity="0"/>
-        <circle id="trail1b" r="5"  fill="#00f0ff" opacity="0"/>
-        <circle id="trail2a" r="7"  fill="#06d6a0" opacity="0"/>
-        <circle id="trail2b" r="6"  fill="#06d6a0" opacity="0"/>
-        <circle id="trail3a" r="8"  fill="#ff6b6b" opacity="0"/>
-        <circle id="trail3b" r="6"  fill="#ff6b6b" opacity="0"/>
-        <circle id="trail4a" r="6"  fill="#ffd166" opacity="0"/>
-        <circle id="trail4b" r="5"  fill="#ffd166" opacity="0"/>
-        <circle id="trail5a" r="5"  fill="#e040fb" opacity="0"/>
-        <circle id="trail5b" r="4"  fill="#e040fb" opacity="0"/>
-      </g>
-
-      <!-- Planets -->
-      <circle id="planet1" r="8"  fill="#00f0ff" filter="url(#planet-glow)"/>
-      <circle id="planet2" r="10" fill="#06d6a0" filter="url(#planet-glow)"/>
-      <circle id="planet3" r="12" fill="#ff6b6b" filter="url(#planet-glow)"/>
-      <circle id="planet4" r="8"  fill="#ffd166" filter="url(#planet-glow)"/>
-      <circle id="planet5" r="7"  fill="#e040fb" filter="url(#planet-glow)"/>
-    </svg>
-
-    <div style="margin-top:1rem">
-      <span class="technique-tag" style="color:#ffd166;border-color:rgba(255,209,102,0.3);background:rgba(255,209,102,0.08)">MotionPathPlugin</span>
-      <span class="technique-tag" style="color:#ffd166;border-color:rgba(255,209,102,0.3);background:rgba(255,209,102,0.08)">SVG ellipse paths</span>
-      <span class="technique-tag" style="color:#ffd166;border-color:rgba(255,209,102,0.3);background:rgba(255,209,102,0.08)">staggered timelines</span>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════
-     SECTION 7 · SVG FILTER GALLERY
-     ════════════════════════════════════════════════════════ -->
-<section id="filters">
-  <span class="section-label">07 — svg filters</span>
-  <div class="section-content">
-    <div class="badge" style="background:rgba(6,214,160,0.1);border-color:rgba(6,214,160,0.3);color:#06d6a0">⚗ Filter Magic</div>
-    <h2>SVG <span style="color:#06d6a0">Filter Gallery</span></h2>
-    <p class="subtitle">SVG filter primitives unlock effects impossible with CSS alone. <code style="color:#06d6a0">feTurbulence</code>, <code style="color:#06d6a0">feDisplacementMap</code>, and <code style="color:#06d6a0">feOffset</code> on color channels.</p>
-
-    <div class="filter-grid">
-
-      <!-- Card 1: Liquid Text -->
-      <div class="filter-card">
-        <div class="filter-card-label">Liquid Text</div>
-        <svg viewBox="0 0 260 120" width="260" height="120" overflow="visible">
-          <defs>
-            <filter id="liquid-filter" x="-10%" y="-30%" width="120%" height="160%">
-              <feTurbulence id="liquid-turb" type="turbulence" baseFrequency="0.025 0.04"
-                numOctaves="3" seed="5" result="noise"/>
-              <feDisplacementMap in="SourceGraphic" in2="noise" scale="18"
-                xChannelSelector="R" yChannelSelector="G"/>
-            </filter>
-          </defs>
-          <text x="130" y="80" font-size="52" font-weight="900" fill="#06d6a0"
-            font-family="Inter,sans-serif" text-anchor="middle"
-            filter="url(#liquid-filter)" letter-spacing="-2">LIQUID</text>
+    <!-- Card 6: Orbital -->
+    <a href="t6.html" class="card">
+      <div class="card-preview">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="60" cy="60" rx="38" ry="38" fill="none" stroke="rgba(255,209,102,0.12)" stroke-width="1"/>
+          <ellipse cx="60" cy="60" rx="52" ry="52" fill="none" stroke="rgba(255,209,102,0.08)" stroke-width="1"/>
+          <!-- Sun -->
+          <circle class="orbit-sun" cx="60" cy="60" r="10" fill="#ffd166" style="filter:drop-shadow(0 0 6px #ffd166)"/>
+          <!-- Planet 1 on inner orbit -->
+          <g class="orbit-p1">
+            <circle cx="60" cy="60" r="5" fill="#00f0ff" style="filter:drop-shadow(0 0 4px #00f0ff)"/>
+          </g>
+          <!-- Planet 2 on outer orbit -->
+          <g class="orbit-p2">
+            <circle cx="60" cy="60" r="4" fill="#e040fb" style="filter:drop-shadow(0 0 4px #e040fb)"/>
+          </g>
         </svg>
-        <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;max-width:200px">
-          <code style="color:#06d6a0">feTurbulence</code> + <code style="color:#06d6a0">feDisplacementMap</code> warps geometry in real-time
-        </p>
       </div>
+      <div class="card-body">
+        <div class="card-num">06 — MotionPathPlugin</div>
+        <div class="card-name">Orbital System</div>
+        <p class="card-desc">Planets orbit a central sun using GSAP MotionPathPlugin. Each world follows an SVG ellipse at its own speed.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
 
-      <!-- Card 2: Glow Pulse -->
-      <div class="filter-card">
-        <div class="filter-card-label">Glow Pulse</div>
-        <svg viewBox="0 0 260 160" width="260" height="160" overflow="visible">
-          <defs>
-            <filter id="glow-pulse-filter" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur id="pulse-blur" stdDeviation="6" result="blur"/>
-              <feColorMatrix in="blur" type="matrix"
-                values="0 0 0 0 0.4   0 0 0 0 0.85  0 0 0 0 0.6   0 0 0 1 0" result="colored"/>
-              <feMerge><feMergeNode in="colored"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-          <polygon id="glow-hex" points="130,30 175,57.5 175,112.5 130,140 85,112.5 85,57.5"
-            fill="none" stroke="#06d6a0" stroke-width="2" filter="url(#glow-pulse-filter)"/>
-          <!-- Inner detail -->
-          <polygon points="130,55 155,68.75 155,96.25 130,110 105,96.25 105,68.75"
-            fill="none" stroke="rgba(6,214,160,0.4)" stroke-width="1"/>
-          <circle cx="130" cy="85" r="10" fill="rgba(6,214,160,0.3)" stroke="#06d6a0" stroke-width="1"/>
+    <!-- Card 7: Filters -->
+    <a href="t7.html" class="card">
+      <div class="card-preview">
+        <svg viewBox="0 0 160 80" xmlns="http://www.w3.org/2000/svg">
+          <text class="filter-text-anim" x="80" y="50" font-size="36" font-weight="900"
+            font-family="Inter,sans-serif" text-anchor="middle" letter-spacing="-1">FILTER</text>
+          <polygon class="filter-hex" points="130,20 148,30 148,50 130,60 112,50 112,30"
+            fill="none" stroke="#06d6a0" stroke-width="1.5"/>
         </svg>
-        <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;max-width:200px">
-          <code style="color:#06d6a0">feGaussianBlur</code> stdDeviation pulses, creating a breathing glow effect
-        </p>
       </div>
+      <div class="card-body">
+        <div class="card-num">07 — SVG filters</div>
+        <div class="card-name">Filter Gallery</div>
+        <p class="card-desc">Liquid text, glow pulse, and RGB glitch effects using feTurbulence, feDisplacementMap, and feOffset primitives.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
 
-      <!-- Card 3: Glitch -->
-      <div class="filter-card">
-        <div class="filter-card-label">RGB Glitch</div>
-        <svg viewBox="0 0 260 120" width="260" height="120" overflow="visible">
-          <defs>
-            <filter id="glitch-filter" x="-20%" y="-30%" width="140%" height="160%" color-interpolation-filters="sRGB">
-              <feImage id="glitch-src" result="src"/>
-              <!-- R channel shifted right -->
-              <feOffset id="glitch-r" in="SourceGraphic" dx="0" dy="0" result="r-shifted"/>
-              <feColorMatrix in="r-shifted" type="matrix"
-                values="1 0 0 0 0   0 0 0 0 0   0 0 0 0 0   0 0 0 0.7 0" result="r-channel"/>
-              <!-- G channel -->
-              <feOffset id="glitch-g" in="SourceGraphic" dx="0" dy="0" result="g-shifted"/>
-              <feColorMatrix in="g-shifted" type="matrix"
-                values="0 0 0 0 0   0 1 0 0 0   0 0 0 0 0   0 0 0 0.7 0" result="g-channel"/>
-              <!-- B channel shifted left -->
-              <feOffset id="glitch-b" in="SourceGraphic" dx="0" dy="0" result="b-shifted"/>
-              <feColorMatrix in="b-shifted" type="matrix"
-                values="0 0 0 0 0   0 0 0 0 0   0 0 1 0 0   0 0 0 0.7 0" result="b-channel"/>
-              <feMerge>
-                <feMergeNode in="r-channel"/>
-                <feMergeNode in="g-channel"/>
-                <feMergeNode in="b-channel"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <text id="glitch-text" x="130" y="78" font-size="48" font-weight="900" fill="white"
-            font-family="Inter,sans-serif" text-anchor="middle"
-            filter="url(#glitch-filter)" letter-spacing="-2">GLITCH</text>
+    <!-- Card 8: Particles -->
+    <a href="t8.html" class="card">
+      <div class="card-preview">
+        <svg viewBox="0 0 160 100" xmlns="http://www.w3.org/2000/svg">
+          <circle class="pd1" cx="30"  cy="30"  r="2.5" fill="hsl(260,80%,70%)"/>
+          <circle class="pd2" cx="60"  cy="50"  r="2"   fill="hsl(280,80%,70%)"/>
+          <circle class="pd3" cx="90"  cy="25"  r="3"   fill="hsl(240,80%,75%)"/>
+          <circle class="pd4" cx="120" cy="60"  r="2"   fill="hsl(300,80%,70%)"/>
+          <circle class="pd5" cx="50"  cy="75"  r="2.5" fill="hsl(260,80%,75%)"/>
+          <circle class="pd6" cx="110" cy="35"  r="2"   fill="hsl(250,80%,70%)"/>
+          <circle class="pd7" cx="75"  cy="80"  r="3"   fill="hsl(270,80%,70%)"/>
+          <circle class="pd8" cx="140" cy="50"  r="2"   fill="hsl(290,80%,75%)"/>
+          <!-- Proximity lines -->
+          <line x1="30" y1="30" x2="60" y2="50" stroke="rgba(108,99,255,0.25)" stroke-width="0.8"/>
+          <line x1="60" y1="50" x2="90" y2="25" stroke="rgba(108,99,255,0.25)" stroke-width="0.8"/>
+          <line x1="90" y1="25" x2="120" y2="60" stroke="rgba(108,99,255,0.2)"  stroke-width="0.8"/>
+          <line x1="50" y1="75" x2="75" y2="80"  stroke="rgba(108,99,255,0.3)"  stroke-width="0.8"/>
+          <line x1="110" y1="35" x2="120" y2="60" stroke="rgba(108,99,255,0.2)" stroke-width="0.8"/>
         </svg>
-        <p style="font-size:0.75rem;color:var(--text-muted);text-align:center;max-width:200px">
-          <code style="color:#06d6a0">feOffset</code> separates R/G/B channels randomly, snapping back to baseline
-        </p>
       </div>
+      <div class="card-body">
+        <div class="card-num">08 — Canvas 2D</div>
+        <div class="card-name">Particle Constellation</div>
+        <p class="card-desc">70 particles drift across canvas. Proximity lines form dynamically. Cursor repels them. Pure canvas, pure performance.</p>
+        <div class="card-arrow">→</div>
+      </div>
+    </a>
 
-    </div>
   </div>
-</section>
+</main>
 
-<!-- ════════════════════════════════════════════════════════
-     SECTION 8 · PARTICLE CONSTELLATION
-     ════════════════════════════════════════════════════════ -->
-<section id="particles">
-  <span class="section-label" style="z-index:10">08 — particles</span>
-  <canvas id="particle-canvas"></canvas>
-
-  <div class="section-content particles-content">
-    <div class="badge" style="background:rgba(224,64,251,0.1);border-color:rgba(224,64,251,0.3);color:#e040fb">✦ Particle System</div>
-    <h2 style="color:#e040fb">Particle <span style="color:var(--text)">Constellation</span></h2>
-    <p class="subtitle" style="color:var(--text-muted)">70 particles drift across a canvas. Proximity lines form dynamically. Your cursor repels them. Pure canvas, pure performance.</p>
-    <div style="margin-top:1rem">
-      <span class="technique-tag" style="color:#e040fb;border-color:rgba(224,64,251,0.3);background:rgba(224,64,251,0.08)">Canvas 2D</span>
-      <span class="technique-tag" style="color:#e040fb;border-color:rgba(224,64,251,0.3);background:rgba(224,64,251,0.08)">requestAnimationFrame</span>
-      <span class="technique-tag" style="color:#e040fb;border-color:rgba(224,64,251,0.3);background:rgba(224,64,251,0.08)">proximity detection</span>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════════════════════════════
-     FOOTER
-     ════════════════════════════════════════════════════════ -->
 <footer>
-  <div class="footer-logo">SVG Animation Mastery</div>
-  <p>Built with <strong>SVG</strong> + <a href="https://greensock.com/gsap/" target="_blank" rel="noopener">GSAP 3.12.5</a> · No frameworks · No build tools</p>
-  <p style="margin-top:0.5rem;font-size:0.75rem">8 techniques · 100% GPU-composited · Single HTML file</p>
+  <p><strong>SVG animations</strong> can power everything from data dashboards to immersive landing pages &mdash; all GPU-composited, framework-free, and accessible.</p>
+  <p style="margin-top:0.4rem">Built with <strong>SVG</strong> + <strong>GSAP 3.12.5</strong> &middot; No frameworks &middot; No build tools &middot; 8 techniques</p>
 </footer>
 
-<!-- SCRIPTS -->
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
-<script>
-'use strict';
-// ─────────────────────────────────────────────────────────────────
-// GSAP SETUP
-// ─────────────────────────────────────────────────────────────────
-gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-
-// ─────────────────────────────────────────────────────────────────
-// SCROLL PROGRESS BAR
-// ─────────────────────────────────────────────────────────────────
-gsap.to('#scroll-progress', {
-  scaleX: 1,
-  ease: 'none',
-  scrollTrigger: {
-    trigger: 'body',
-    start: 'top top',
-    end: 'bottom bottom',
-    scrub: 0
-  }
-});
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 1 — HERO: Liquid Morphing Blobs
-// ─────────────────────────────────────────────────────────────────
-(function initHero() {
-  const turb = document.getElementById('hero-turb');
-
-  // Animate turbulence baseFrequency for organic movement
-  let bfX = 0.008, bfY = 0.010;
-  let targetX = 0.008, targetY = 0.010;
-  let timeX = 0, timeY = 0;
-
-  function animateTurbulence() {
-    timeX += 0.003;
-    timeY += 0.002;
-    const newX = 0.006 + Math.sin(timeX) * 0.004 + Math.sin(timeX * 1.7) * 0.002;
-    const newY = 0.008 + Math.cos(timeY) * 0.004 + Math.cos(timeY * 2.1) * 0.002;
-    bfX += (newX - bfX) * 0.05;
-    bfY += (newY - bfY) * 0.05;
-    turb.setAttribute('baseFrequency', `${bfX.toFixed(5)} ${bfY.toFixed(5)}`);
-    requestAnimationFrame(animateTurbulence);
-  }
-  animateTurbulence();
-
-  // Float the blobs
-  const blobs = [
-    { el: '#blob1', x: '+=60', y: '+=50', dur: 12, scaleRange: [0.9, 1.15] },
-    { el: '#blob2', x: '-=70', y: '+=40', dur: 15, scaleRange: [0.85, 1.2] },
-    { el: '#blob3', x: '+=50', y: '-=60', dur: 18, scaleRange: [0.9, 1.1] },
-    { el: '#blob4', x: '-=40', y: '-=50', dur: 14, scaleRange: [0.88, 1.18] },
-  ];
-
-  blobs.forEach(({ el, x, y, dur, scaleRange }) => {
-    gsap.to(el, {
-      x, y,
-      scale: scaleRange[1],
-      duration: dur,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-    });
-    gsap.to(el, {
-      scale: scaleRange[0],
-      duration: dur * 0.7,
-      repeat: -1,
-      yoyo: true,
-      ease: 'sine.inOut',
-      delay: dur * 0.3,
-    });
-  });
-
-  // Hero entrance
-  const heroTl = gsap.timeline({ delay: 0.2 });
-  heroTl
-    .from('.badge', { opacity: 0, y: 20, duration: 0.6, ease: 'power2.out' })
-    .from('.hero-title', { opacity: 0, y: 40, duration: 0.8, ease: 'power3.out' }, '-=0.3')
-    .from('.subtitle', { opacity: 0, y: 20, duration: 0.6, ease: 'power2.out' }, '-=0.4')
-    .from('.hero-cta', { opacity: 0, y: 20, duration: 0.5, ease: 'power2.out' }, '-=0.3')
-    .from('.scroll-indicator', { opacity: 0, duration: 0.5 }, '-=0.1');
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 2 — CIRCUIT PATH DRAWING
-// ─────────────────────────────────────────────────────────────────
-(function initCircuit() {
-  const paths = document.querySelectorAll('.cp');
-  const nodes = document.querySelectorAll('.cn');
-
-  // Set up dash arrays
-  paths.forEach(p => {
-    const len = p.getTotalLength ? p.getTotalLength() : 200;
-    p.style.strokeDasharray = len;
-    p.style.strokeDashoffset = len;
-  });
-
-  // Nodes start invisible
-  gsap.set(nodes, { opacity: 0, scale: 0, transformOrigin: 'center' });
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#circuit',
-      start: 'top 70%',
-      end: 'bottom 30%',
-      toggleActions: 'play none none reverse'
-    }
-  });
-
-  // Draw paths with stagger
-  tl.to(paths, {
-    strokeDashoffset: 0,
-    duration: 1.2,
-    stagger: 0.08,
-    ease: 'power2.inOut'
-  });
-
-  // Nodes pop in
-  tl.to(nodes, {
-    opacity: 1,
-    scale: 1,
-    duration: 0.4,
-    stagger: 0.06,
-    ease: 'back.out(2)'
-  }, '-=0.8');
-
-  // Pulse the main nodes
-  gsap.to('.cn[r="5"], .cn[r="4"]', {
-    scale: 1.4,
-    opacity: 0.6,
-    duration: 1.2,
-    repeat: -1,
-    yoyo: true,
-    stagger: 0.15,
-    ease: 'sine.inOut',
-    transformOrigin: 'center',
-    delay: 1.5
-  });
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 3 — SHAPE MORPHING
-// ─────────────────────────────────────────────────────────────────
-(function initMorphing() {
-  // All paths use exactly 6 C commands + Z
-  // Format: M cx cy C ... C ... C ... C ... C ... C ... Z
-  const morphShapes = {
-    circle: `M 150 40
-      C 190 40 240 85 240 150
-      C 240 215 190 260 150 260
-      C 110 260 60 215 60 150
-      C 60 85 110 40 150 40
-      C 150 40 150 40 150 40
-      C 150 40 150 40 150 40 Z`,
-
-    star: `M 150 10
-      C 165 55 195 60 235 68
-      C 205 100 210 130 230 165
-      C 195 158 175 175 150 210
-      C 125 175 105 158 70 165
-      C 90 130 95 100 65 68
-      C 105 60 135 55 150 10 Z`,
-
-    blob: `M 150 25
-      C 210 20 265 60 270 120
-      C 275 180 240 235 195 255
-      C 150 275 90 265 55 225
-      C 20 185 25 120 45 78
-      C 65 35 95 30 150 25 Z`,
-
-    hexagon: `M 150 30
-      C 152 30 215 67 215 70
-      C 217 73 217 177 215 180
-      C 213 183 152 220 150 220
-      C 148 220 85 183 85 180
-      C 83 177 83 73 85 70
-      C 87 67 148 30 150 30 Z`,
-  };
-
-  const labels = ['Circle', 'Star', 'Blob', 'Hexagon'];
-  const colors = [
-    { s1: '#ff6b6b', s2: '#6c63ff' },
-    { s1: '#ffd166', s2: '#ff6b6b' },
-    { s1: '#06d6a0', s2: '#00f0ff' },
-    { s1: '#6c63ff', s2: '#e040fb' },
-  ];
-
-  const morphEl = document.getElementById('main-morph');
-  const labelEl = document.getElementById('morph-shape-label');
-  const stop1 = document.getElementById('morph-stop1');
-  const stop2 = document.getElementById('morph-stop2');
-  const shapeKeys = ['circle', 'star', 'blob', 'hexagon'];
-  let idx = 0;
-
-  function morphNext() {
-    idx = (idx + 1) % shapeKeys.length;
-    const key = shapeKeys[idx];
-    gsap.to(morphEl, {
-      duration: 1.8,
-      ease: 'power2.inOut',
-      attr: { d: morphShapes[key].replace(/\s+/g, ' ').trim() },
-      onUpdate: function() {},
-      onComplete: () => {
-        labelEl.textContent = labels[idx];
-        gsap.delayedCall(0.8, morphNext);
-      }
-    });
-    gsap.to(stop1, {
-      duration: 1.8,
-      attr: { 'stop-color': colors[idx].s1 },
-      ease: 'power2.inOut'
-    });
-    gsap.to(stop2, {
-      duration: 1.8,
-      attr: { 'stop-color': colors[idx].s2 },
-      ease: 'power2.inOut'
-    });
-  }
-
-  gsap.delayedCall(1.0, morphNext);
-
-  // Small morphs
-  const smallShapes = [
-    {
-      id: 'small-morph-1',
-      shapes: [
-        'M 50 15 C 65 15 80 30 80 50 C 80 65 65 80 50 85 C 35 80 20 65 20 50 C 20 30 35 15 50 15 Z',
-        'M 50 10 C 58 25 80 28 88 45 C 96 62 82 78 68 85 C 54 92 36 92 24 83 C 12 74 8 56 16 40 C 24 24 42 -5 50 10 Z',
-        'M 50 15 C 70 10 88 28 88 50 C 88 72 70 88 50 88 C 30 88 12 72 12 50 C 12 28 30 20 50 15 Z',
-        'M 50 12 C 55 12 82 28 82 50 C 82 68 55 85 50 85 C 45 85 18 68 18 50 C 18 28 45 12 50 12 Z',
-      ],
-      dur: 2.2,
-      delay: 0.3
-    },
-    {
-      id: 'small-morph-2',
-      shapes: [
-        'M 50 15 C 62 15 78 30 78 50 C 78 65 62 78 50 85 C 38 78 22 65 22 50 C 22 30 38 15 50 15 Z',
-        'M 50 8 C 66 22 85 22 88 45 C 91 65 72 84 55 88 C 38 92 18 80 13 62 C 8 44 18 20 35 12 C 42 8 44 -2 50 8 Z',
-        'M 50 18 C 75 10 92 35 88 58 C 84 80 65 90 50 88 C 35 86 15 75 12 55 C 9 35 25 12 50 18 Z',
-        'M 50 15 C 58 15 80 25 82 50 C 84 72 62 85 50 85 C 38 85 18 72 18 50 C 18 28 42 15 50 15 Z',
-      ],
-      dur: 3.0,
-      delay: 0.8
-    },
-    {
-      id: 'small-morph-3',
-      shapes: [
-        'M 50 15 C 64 15 79 29 79 50 C 79 66 64 79 50 85 C 36 79 21 66 21 50 C 21 29 36 15 50 15 Z',
-        'M 50 10 C 60 10 80 22 82 42 C 84 62 70 82 50 88 C 30 94 12 78 10 58 C 8 38 20 18 35 12 C 40 10 40 10 50 10 Z',
-        'M 50 20 C 72 12 90 32 90 52 C 90 70 72 88 50 88 C 28 88 10 70 10 52 C 10 32 28 28 50 20 Z',
-        'M 50 14 C 55 14 82 30 82 50 C 82 67 55 85 50 85 C 45 85 18 67 18 50 C 18 30 45 14 50 14 Z',
-      ],
-      dur: 2.6,
-      delay: 1.4
-    }
-  ];
-
-  smallShapes.forEach(({ id, shapes, dur, delay }) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    let si = 0;
-    function nextSmall() {
-      si = (si + 1) % shapes.length;
-      gsap.to(el, {
-        duration: dur,
-        ease: 'power1.inOut',
-        attr: { d: shapes[si] },
-        onComplete: () => gsap.delayedCall(0.4, nextSmall)
-      });
-    }
-    gsap.delayedCall(delay, nextSmall);
-  });
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 4 — SCROLL-DRIVEN DATA VIZ
-// ─────────────────────────────────────────────────────────────────
-(function initDataViz() {
-  const barData = [42, 34, 28, 38, 22, 18, 24];
-  const bars = document.querySelectorAll('.bar');
-  const barValues = document.querySelectorAll('.bar-value');
-
-  // Counters object for GSAP
-  const counters = Array.from(barValues).map(() => ({ val: 0 }));
-
-  const barTl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#dataviz',
-      start: 'top 60%',
-      end: 'bottom 20%',
-      toggleActions: 'play none none reverse'
-    }
-  });
-
-  barTl.to(bars, {
-    scaleY: 1,
-    duration: 1,
-    stagger: 0.08,
-    ease: 'power3.out'
-  });
-
-  // Animate counters
-  barData.forEach((val, i) => {
-    barTl.to(counters[i], {
-      val,
-      duration: 1,
-      ease: 'power2.out',
-      onUpdate: function() {
-        barValues[i].textContent = Math.round(counters[i].val) + 'M';
-      }
-    }, '<0.08');
-  });
-
-  // Line chart
-  const linePath = document.getElementById('line-path');
-  const lineLen = linePath.getTotalLength();
-  gsap.set(linePath, { strokeDasharray: lineLen, strokeDashoffset: lineLen });
-
-  const lineTl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#line-chart-svg',
-      start: 'top 80%',
-      toggleActions: 'play none none reverse'
-    }
-  });
-
-  lineTl.to(linePath, {
-    strokeDashoffset: 0,
-    duration: 2,
-    ease: 'power2.inOut'
-  });
-
-  lineTl.to('.line-dot', {
-    opacity: 1,
-    scale: 1.2,
-    duration: 0.4,
-    stagger: 0.15,
-    ease: 'back.out(2)',
-    transformOrigin: 'center'
-  }, '-=0.8');
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 5 — MOUSE SPOTLIGHT
-// ─────────────────────────────────────────────────────────────────
-(function initSpotlight() {
-  const section = document.getElementById('spotlight');
-  const overlay = document.getElementById('spotlight-overlay');
-  const hint = document.getElementById('spotlight-hint');
-
-  // Generate star field programmatically
-  const starField = document.getElementById('star-field');
-  const constLines = document.getElementById('constellation-lines');
-
-  const stars = [];
-  for (let i = 0; i < 120; i++) {
-    const x = Math.random() * 1920;
-    const y = Math.random() * 1080;
-    const r = Math.random() * 2.5 + 0.5;
-    const opacity = Math.random() * 0.6 + 0.2;
-    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    circle.setAttribute('cx', x);
-    circle.setAttribute('cy', y);
-    circle.setAttribute('r', r);
-    circle.setAttribute('fill', Math.random() > 0.7 ? '#a0a0ff' : 'white');
-    circle.setAttribute('opacity', opacity);
-    starField.appendChild(circle);
-    stars.push({ x, y });
-  }
-
-  // Constellation lines between nearby stars
-  const constellationPairs = [
-    [0,5],[5,12],[12,18],[18,25],[25,30],
-    [3,8],[8,15],[15,22],[22,28],
-    [1,6],[6,11],[11,19],[19,26],
-    [4,9],[9,16],[16,23],[23,29],
-    [2,7],[7,14],[14,21]
-  ];
-  constellationPairs.forEach(([a, b]) => {
-    if (stars[a] && stars[b]) {
-      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-      line.setAttribute('x1', stars[a].x);
-      line.setAttribute('y1', stars[a].y);
-      line.setAttribute('x2', stars[b].x);
-      line.setAttribute('y2', stars[b].y);
-      constLines.appendChild(line);
-    }
-  });
-
-  let mouseX = -999, mouseY = -999;
-  let rafId = null;
-  let moved = false;
-
-  function updateMask() {
-    const rect = section.getBoundingClientRect();
-    const relX = mouseX - rect.left;
-    const relY = mouseY - rect.top;
-    overlay.style.setProperty('--mx', relX + 'px');
-    overlay.style.setProperty('--my', relY + 'px');
-    rafId = null;
-  }
-
-  function onMouseMove(e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    if (!rafId) rafId = requestAnimationFrame(updateMask);
-    if (!moved) {
-      moved = true;
-      gsap.to(hint, { opacity: 0, duration: 0.5, ease: 'power2.out' });
-    }
-  }
-
-  function onTouchMove(e) {
-    if (e.touches.length > 0) {
-      const t = e.touches[0];
-      mouseX = t.clientX;
-      mouseY = t.clientY;
-      if (!rafId) rafId = requestAnimationFrame(updateMask);
-      if (!moved) {
-        moved = true;
-        gsap.to(hint, { opacity: 0, duration: 0.5 });
-      }
-    }
-  }
-
-  section.addEventListener('mousemove', onMouseMove, { passive: true });
-  section.addEventListener('touchmove', onTouchMove, { passive: true });
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 6 — ORBITAL SYSTEM
-// ─────────────────────────────────────────────────────────────────
-(function initOrbital() {
-  // Sun pulse
-  gsap.to('#sun', {
-    scale: 1.15,
-    duration: 2,
-    repeat: -1,
-    yoyo: true,
-    ease: 'sine.inOut',
-    transformOrigin: '0 0'
-  });
-
-  // Planet configs: [id, orbitId, duration, startProgress, trailA, trailB, trailOffset]
-  const planetConfigs = [
-    { planet: '#planet1', orbit: '#orbit1', dur: 4,  start: 0,    trailA: '#trail1a', trailB: '#trail1b' },
-    { planet: '#planet2', orbit: '#orbit2', dur: 7,  start: 0.25, trailA: '#trail2a', trailB: '#trail2b' },
-    { planet: '#planet3', orbit: '#orbit3', dur: 11, start: 0.5,  trailA: '#trail3a', trailB: '#trail3b' },
-    { planet: '#planet4', orbit: '#orbit4', dur: 16, start: 0.75, trailA: '#trail4a', trailB: '#trail4b' },
-    { planet: '#planet5', orbit: '#orbit5', dur: 22, start: 0.1,  trailA: '#trail5a', trailB: '#trail5b' },
-  ];
-
-  planetConfigs.forEach(({ planet, orbit, dur, start, trailA, trailB }) => {
-    const orbitEl = document.querySelector(orbit);
-    const planetEl = document.querySelector(planet);
-
-    // Animate planet along orbit
-    gsap.to(planet, {
-      motionPath: {
-        path: orbit,
-        align: orbit,
-        alignOrigin: [0.5, 0.5],
-        start: start,
-        end: start + 1,
-        autoRotate: false,
-      },
-      duration: dur,
-      repeat: -1,
-      ease: 'none',
-    });
-
-    // Trail animation — follow planet with slight lag
-    [trailA, trailB].forEach((trailId, ti) => {
-      const trailEl = document.querySelector(trailId);
-      if (!trailEl) return;
-      const lag = (ti + 1) * 0.06;
-      const laggedStart = start - lag;
-      gsap.set(trailId, { opacity: 0.5 - ti * 0.15 });
-      gsap.to(trailId, {
-        motionPath: {
-          path: orbit,
-          align: orbit,
-          alignOrigin: [0.5, 0.5],
-          start: laggedStart,
-          end: laggedStart + 1,
-          autoRotate: false,
-        },
-        duration: dur,
-        repeat: -1,
-        ease: 'none',
-      });
-    });
-  });
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 7 — SVG FILTER GALLERY
-// ─────────────────────────────────────────────────────────────────
-(function initFilters() {
-  // 1. Liquid text turbulence
-  const liquidTurb = document.getElementById('liquid-turb');
-  let lt = 0;
-  function animLiquid() {
-    lt += 0.008;
-    const bfx = 0.02 + Math.sin(lt) * 0.012;
-    const bfy = 0.035 + Math.cos(lt * 1.3) * 0.015;
-    liquidTurb.setAttribute('baseFrequency', `${bfx.toFixed(4)} ${bfy.toFixed(4)}`);
-    requestAnimationFrame(animLiquid);
-  }
-  animLiquid();
-
-  // 2. Glow pulse
-  const pulseBlur = document.getElementById('pulse-blur');
-  const glowHex = document.getElementById('glow-hex');
-  gsap.to({ sd: 6 }, {
-    sd: 20,
-    duration: 1.8,
-    repeat: -1,
-    yoyo: true,
-    ease: 'sine.inOut',
-    onUpdate: function() {
-      pulseBlur.setAttribute('stdDeviation', this.targets()[0].sd.toFixed(2));
-    }
-  });
-
-  // Hex color shift
-  gsap.to(glowHex, {
-    duration: 3,
-    repeat: -1,
-    yoyo: true,
-    ease: 'sine.inOut',
-    attr: { stroke: '#00f0ff' }
-  });
-  gsap.to(glowHex, {
-    duration: 5,
-    repeat: -1,
-    yoyo: true,
-    ease: 'sine.inOut',
-    attr: { stroke: '#6c63ff' },
-    delay: 1.5
-  });
-
-  // 3. Glitch effect
-  const glitchR = document.getElementById('glitch-r');
-  const glitchG = document.getElementById('glitch-g');
-  const glitchB = document.getElementById('glitch-b');
-
-  function triggerGlitch() {
-    const intensity = 4 + Math.random() * 8;
-    const dur = 0.06 + Math.random() * 0.08;
-    gsap.timeline()
-      .to({}, {
-        duration: dur,
-        onStart: () => {
-          glitchR.setAttribute('dx', (Math.random() * intensity - intensity/2).toFixed(1));
-          glitchR.setAttribute('dy', (Math.random() * 2 - 1).toFixed(1));
-          glitchG.setAttribute('dx', (Math.random() * -intensity/2).toFixed(1));
-          glitchG.setAttribute('dy', 0);
-          glitchB.setAttribute('dx', (Math.random() * intensity/2).toFixed(1));
-          glitchB.setAttribute('dy', (Math.random() * 2 - 1).toFixed(1));
-        }
-      })
-      .call(() => {
-        glitchR.setAttribute('dx', 0);
-        glitchR.setAttribute('dy', 0);
-        glitchG.setAttribute('dx', 0);
-        glitchG.setAttribute('dy', 0);
-        glitchB.setAttribute('dx', 0);
-        glitchB.setAttribute('dy', 0);
-      });
-
-    // Schedule next glitch
-    gsap.delayedCall(0.8 + Math.random() * 2.5, triggerGlitch);
-  }
-
-  gsap.delayedCall(1.0, triggerGlitch);
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// SECTION 8 — PARTICLE CONSTELLATION
-// ─────────────────────────────────────────────────────────────────
-(function initParticles() {
-  const canvas = document.getElementById('particle-canvas');
-  const ctx = canvas.getContext('2d');
-  const section = document.getElementById('particles');
-
-  const NUM_PARTICLES = 72;
-  const CONNECT_DIST = 140;
-  const REPEL_DIST = 100;
-  const REPEL_FORCE = 0.4;
-
-  let W, H;
-  let mouseX = -9999, mouseY = -9999;
-  let particles = [];
-
-  function resize() {
-    const rect = section.getBoundingClientRect();
-    W = canvas.width = rect.width || window.innerWidth;
-    H = canvas.height = rect.height || window.innerHeight;
-  }
-
-  window.addEventListener('resize', resize);
-  resize();
-
-  // Create particles
-  for (let i = 0; i < NUM_PARTICLES; i++) {
-    particles.push({
-      x: Math.random() * (W || window.innerWidth),
-      y: Math.random() * (H || window.innerHeight),
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 1,
-      color: `hsl(${240 + Math.random() * 80},80%,70%)`,
-    });
-  }
-
-  let rafPart = null;
-
-  function drawParticles() {
-    ctx.clearRect(0, 0, W, H);
-
-    // Update positions
-    for (const p of particles) {
-      // Mouse repulsion
-      const dx = p.x - mouseX;
-      const dy = p.y - mouseY;
-      const dist = Math.sqrt(dx*dx + dy*dy);
-      if (dist < REPEL_DIST && dist > 0.1) {
-        const force = (REPEL_DIST - dist) / REPEL_DIST * REPEL_FORCE;
-        p.vx += (dx / dist) * force;
-        p.vy += (dy / dist) * force;
-      }
-
-      // Speed cap
-      const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
-      if (speed > 2) {
-        p.vx = (p.vx / speed) * 2;
-        p.vy = (p.vy / speed) * 2;
-      }
-
-      // Damping
-      p.vx *= 0.99;
-      p.vy *= 0.99;
-
-      p.x += p.vx;
-      p.y += p.vy;
-
-      // Wrap around
-      if (p.x < 0) p.x = W;
-      if (p.x > W) p.x = 0;
-      if (p.y < 0) p.y = H;
-      if (p.y > H) p.y = 0;
-    }
-
-    // Draw connections
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        if (dist < CONNECT_DIST) {
-          const alpha = (1 - dist / CONNECT_DIST) * 0.5;
-          ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(108,99,255,${alpha.toFixed(3)})`;
-          ctx.lineWidth = 0.8;
-          ctx.stroke();
-        }
-      }
-    }
-
-    // Draw particles
-    for (const p of particles) {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.globalAlpha = 0.85;
-      ctx.fill();
-      ctx.globalAlpha = 1;
-    }
-
-    rafPart = requestAnimationFrame(drawParticles);
-  }
-
-  // Start / stop with IntersectionObserver for perf
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        if (!rafPart) drawParticles();
-      } else {
-        if (rafPart) { cancelAnimationFrame(rafPart); rafPart = null; }
-      }
-    });
-  }, { threshold: 0.1 });
-  io.observe(section);
-
-  // Mouse tracking
-  let mouseRaf = null;
-  section.addEventListener('mousemove', (e) => {
-    if (!mouseRaf) {
-      mouseRaf = requestAnimationFrame(() => {
-        const rect = canvas.getBoundingClientRect();
-        mouseX = e.clientX - rect.left;
-        mouseY = e.clientY - rect.top;
-        mouseRaf = null;
-      });
-    }
-  }, { passive: true });
-
-  section.addEventListener('mouseleave', () => {
-    mouseX = -9999;
-    mouseY = -9999;
-  });
-
-  section.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0) {
-      const rect = canvas.getBoundingClientRect();
-      mouseX = e.touches[0].clientX - rect.left;
-      mouseY = e.touches[0].clientY - rect.top;
-    }
-  }, { passive: true });
-})();
-
-// ─────────────────────────────────────────────────────────────────
-// GENERAL — Entrance animations for section headings
-// ─────────────────────────────────────────────────────────────────
-document.querySelectorAll('section:not(#hero) .section-content h2').forEach(el => {
-  gsap.from(el, {
-    opacity: 0,
-    y: 30,
-    duration: 0.7,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: el,
-      start: 'top 85%',
-      toggleActions: 'play none none reverse'
-    }
-  });
-});
-
-document.querySelectorAll('section:not(#hero) .section-content .subtitle').forEach(el => {
-  gsap.from(el, {
-    opacity: 0,
-    y: 20,
-    duration: 0.6,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: el,
-      start: 'top 88%',
-      toggleActions: 'play none none reverse'
-    }
-  });
-});
-</script>
 </body>
 </html>

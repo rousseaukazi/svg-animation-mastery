@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Particle Constellation — SVG Animation Mastery</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #0f0f1a;
+      --accent: #6c63ff;
+      --purple: #e040fb;
+      --text: #e8e8f0;
+      --text-muted: #6b6b8a;
+      --border: rgba(255,255,255,0.06);
+    }
+    html, body { height: 100%; }
+    body {
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .back-btn, .nav-prev {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.8rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;
+    }
+    .back-btn:hover, .nav-prev:hover { color: var(--text); }
+    .nav-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); }
+    .nav-title span { color: var(--purple); margin-right: 0.5rem; }
+    .nav-placeholder { width: 80px; }
+
+    /* ── PARTICLE FULLSCREEN ── */
+    #particle-wrap {
+      position: relative;
+      height: calc(100vh - 52px);
+      margin-top: 52px;
+      overflow: hidden;
+    }
+    #particle-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .particle-ui {
+      position: relative;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 2rem;
+      pointer-events: none;
+    }
+    .tech-badge {
+      display: inline-flex;
+      background: rgba(224,64,251,0.1);
+      border: 1px solid rgba(224,64,251,0.3);
+      color: var(--purple);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+    .particle-ui h1 {
+      font-size: clamp(2.2rem, 7vw, 5rem);
+      font-weight: 900; letter-spacing: -0.03em; line-height: 1.05; margin-bottom: 0.5rem;
+    }
+    .particle-ui h1 span { color: var(--text); }
+    .particle-ui h1 em { color: var(--purple); font-style: normal; }
+    .particle-ui .subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-muted); max-width: 480px; margin: 0 auto 1.5rem;
+    }
+    .particle-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center;
+    }
+    .tag-purple {
+      background: rgba(224,64,251,0.08);
+      border: 1px solid rgba(224,64,251,0.2);
+      color: var(--purple);
+      font-size: 0.65rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.22rem 0.55rem; border-radius: 4px;
+    }
+
+    /* ── INFO SECTION ── */
+    .info-section { background: var(--bg); padding: 5rem 2rem; }
+    .info-inner { max-width: 740px; margin: 0 auto; }
+    .info-inner h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .info-inner p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+    .info-inner p strong { color: var(--text); }
+    .steps { margin-top: 2rem; display: grid; gap: 1rem; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num {
+      min-width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(224,64,251,0.1);
+      border: 1px solid rgba(224,64,251,0.25);
+      color: var(--purple);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; margin-top: 2px;
+    }
+    .step p { margin: 0; font-size: 0.875rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+    .tag {
+      background: rgba(224,64,251,0.08);
+      border: 1px solid rgba(224,64,251,0.2);
+      color: var(--purple);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.25rem 0.6rem; border-radius: 4px;
+    }
+    .page-nav {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 2rem; display: flex;
+      justify-content: space-between; align-items: center;
+    }
+    .page-nav a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .page-nav a:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .page-nav .disabled { opacity: 0.3; pointer-events: none; }
+    .page-indicator { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="back-btn">← Gallery</a>
+  <div class="nav-title"><span>08</span>Particle Constellation</div>
+  <a href="t7.html" class="nav-prev">← Filters</a>
+</nav>
+
+<div id="particle-wrap">
+  <canvas id="particle-canvas"></canvas>
+
+  <div class="particle-ui">
+    <div class="tech-badge">✦ Particle System</div>
+    <h1><em>Particle</em> <span>Constellation</span></h1>
+    <p class="subtitle">Particles drift across a canvas. Proximity lines form dynamically. Your cursor repels them. Pure canvas, pure performance.</p>
+    <div class="particle-tags">
+      <span class="tag-purple">Canvas 2D</span>
+      <span class="tag-purple">requestAnimationFrame</span>
+      <span class="tag-purple">proximity detection</span>
+      <span class="tag-purple">mouse repulsion</span>
+    </div>
+  </div>
+</div>
+
+<section class="info-section">
+  <div class="info-inner">
+    <h2>How it works</h2>
+    <p>
+      Every frame, each particle's velocity is updated based on proximity to the cursor:
+      particles within <strong>100px</strong> are pushed away proportionally to their closeness.
+      Velocities are capped and damped by <strong>0.99</strong> per frame so they drift to
+      rest naturally after being disturbed.
+    </p>
+    <p>
+      Proximity lines are drawn between any two particles within <strong>140px</strong> of each other.
+      The line opacity is proportional to closeness — <code style="color:var(--purple)">(1 - dist / maxDist) * 0.5</code>
+      — creating a dynamic constellation effect without any pre-defined connections.
+    </p>
+    <p>
+      On <strong>mobile</strong> (window.innerWidth &lt; 768) the particle count is reduced to 30
+      to maintain smooth 60fps on lower-powered devices. An <strong>IntersectionObserver</strong>
+      pauses the rAF loop when the canvas is off-screen, preserving battery.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong style="color:var(--text)">Particle initialization</strong> — Each particle gets a random position, velocity (±0.2), radius (1–3px), and an HSL color in the 240–320° range for the purple-blue palette.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong style="color:var(--text)">Mouse repulsion physics</strong> — <code style="color:var(--purple)">force = (repelDist - dist) / repelDist * repelForce</code> gives a linear falloff: strongest at the cursor, zero at the boundary.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong style="color:var(--text)">O(n²) proximity check optimized</strong> — Only the upper triangle of the particle pair matrix is checked (j &gt; i). For 70 particles this is ~2,415 checks per frame — fast enough for 60fps.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong style="color:var(--text)">IntersectionObserver for performance</strong> — The rAF loop starts and stops as the canvas enters/exits the viewport. On mobile, particle count is halved to maintain frame rate.</p>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag">Canvas 2D API</span>
+      <span class="tag">requestAnimationFrame</span>
+      <span class="tag">proximity detection</span>
+      <span class="tag">velocity damping</span>
+      <span class="tag">IntersectionObserver</span>
+      <span class="tag">mobile fallback</span>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <a href="t7.html">← Filter Gallery</a>
+  <span class="page-indicator">08 / 08</span>
+  <a href="#" class="disabled">Next →</a>
+</div>
+
+<script>
+'use strict';
+
+const canvas  = document.getElementById('particle-canvas');
+const ctx     = canvas.getContext('2d');
+const wrap    = document.getElementById('particle-wrap');
+
+// Mobile detection — reduce particle count for performance
+const isMobile = window.innerWidth < 768;
+const NUM_PARTICLES = isMobile ? 30 : 70;
+const CONNECT_DIST  = isMobile ? 110 : 140;
+const REPEL_DIST    = 100;
+const REPEL_FORCE   = 0.4;
+
+let W, H;
+let mouseX = -9999, mouseY = -9999;
+let particles = [];
+let rafPart = null;
+
+function resize() {
+  const rect = wrap.getBoundingClientRect();
+  W = canvas.width  = rect.width  || window.innerWidth;
+  H = canvas.height = rect.height || window.innerHeight;
+}
+
+window.addEventListener('resize', resize, { passive: true });
+resize();
+
+for (let i = 0; i < NUM_PARTICLES; i++) {
+  particles.push({
+    x:  Math.random() * (W || window.innerWidth),
+    y:  Math.random() * (H || window.innerHeight),
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r:  Math.random() * 2 + 1,
+    color: `hsl(${240 + Math.random() * 80},80%,70%)`,
+  });
+}
+
+function drawParticles() {
+  ctx.clearRect(0, 0, W, H);
+
+  for (const p of particles) {
+    const dx = p.x - mouseX;
+    const dy = p.y - mouseY;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist < REPEL_DIST && dist > 0.1) {
+      const force = (REPEL_DIST - dist) / REPEL_DIST * REPEL_FORCE;
+      p.vx += (dx / dist) * force;
+      p.vy += (dy / dist) * force;
+    }
+
+    const speed = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+    if (speed > 2) { p.vx = (p.vx / speed) * 2; p.vy = (p.vy / speed) * 2; }
+
+    p.vx *= 0.99;
+    p.vy *= 0.99;
+    p.x  += p.vx;
+    p.y  += p.vy;
+
+    if (p.x < 0) p.x = W;  if (p.x > W) p.x = 0;
+    if (p.y < 0) p.y = H;  if (p.y > H) p.y = 0;
+  }
+
+  // Draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < CONNECT_DIST) {
+        const alpha = (1 - dist / CONNECT_DIST) * 0.5;
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(108,99,255,${alpha.toFixed(3)})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+    }
+  }
+
+  // Draw particles
+  for (const p of particles) {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = 0.85;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  rafPart = requestAnimationFrame(drawParticles);
+}
+
+// Pause when off-screen
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      if (!rafPart) drawParticles();
+    } else {
+      if (rafPart) { cancelAnimationFrame(rafPart); rafPart = null; }
+    }
+  });
+}, { threshold: 0.1 });
+io.observe(wrap);
+
+// Mouse
+let mouseRaf = null;
+wrap.addEventListener('mousemove', e => {
+  if (!mouseRaf) {
+    mouseRaf = requestAnimationFrame(() => {
+      const rect = canvas.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      mouseRaf = null;
+    });
+  }
+}, { passive: true });
+wrap.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
+
+// Touch
+wrap.addEventListener('touchmove', e => {
+  if (e.touches.length > 0) {
+    const rect = canvas.getBoundingClientRect();
+    mouseX = e.touches[0].clientX - rect.left;
+    mouseY = e.touches[0].clientY - rect.top;
+  }
+}, { passive: true });
+wrap.addEventListener('touchend', () => { mouseX = -9999; mouseY = -9999; });
+</script>
+</body>
+</html>

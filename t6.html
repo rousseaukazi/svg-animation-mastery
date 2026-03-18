@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orbital System — SVG Animation Mastery</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #0f0f1a;
+      --accent: #6c63ff;
+      --gold: #ffd166;
+      --text: #e8e8f0;
+      --text-muted: #6b6b8a;
+      --border: rgba(255,255,255,0.06);
+    }
+    body {
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .back-btn, .nav-next {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.8rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;
+    }
+    .back-btn:hover, .nav-next:hover { color: var(--text); }
+    .nav-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); }
+    .nav-title span { color: var(--gold); margin-right: 0.5rem; }
+
+    .stage {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 80px 2rem 4rem;
+      text-align: center;
+    }
+    .tech-badge {
+      display: inline-flex;
+      background: rgba(255,209,102,0.1);
+      border: 1px solid rgba(255,209,102,0.3);
+      color: var(--gold);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+    .stage h1 {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900; letter-spacing: -0.03em; line-height: 1.05;
+      margin-bottom: 0.5rem;
+    }
+    .stage h1 span { color: var(--gold); }
+    .stage .subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-muted); max-width: 520px; margin: 0 auto 2.5rem;
+    }
+    #orbital-svg {
+      width: 100%;
+      max-width: 560px;
+      height: auto;
+      aspect-ratio: 1;
+    }
+    .orbit-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-top: 1.5rem;
+    }
+    .tag-gold {
+      background: rgba(255,209,102,0.08);
+      border: 1px solid rgba(255,209,102,0.25);
+      color: var(--gold);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.25rem 0.6rem; border-radius: 4px;
+    }
+
+    .info-section { background: var(--bg); padding: 5rem 2rem; }
+    .info-inner { max-width: 740px; margin: 0 auto; }
+    .info-inner h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .info-inner p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+    .info-inner p strong { color: var(--text); }
+    .steps { margin-top: 2rem; display: grid; gap: 1rem; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num {
+      min-width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,209,102,0.1);
+      border: 1px solid rgba(255,209,102,0.25);
+      color: var(--gold);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; margin-top: 2px;
+    }
+    .step p { margin: 0; font-size: 0.875rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+    .page-nav {
+      background: var(--surface); border-top: 1px solid var(--border);
+      padding: 2rem; display: flex;
+      justify-content: space-between; align-items: center;
+    }
+    .page-nav a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .page-nav a:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .page-indicator { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="back-btn">← Gallery</a>
+  <div class="nav-title"><span>06</span>Orbital System</div>
+  <a href="t7.html" class="nav-next">Filters →</a>
+</nav>
+
+<div class="stage">
+  <div class="tech-badge">☀ Orbital System</div>
+  <h1>Motion <span>Along Path</span></h1>
+  <p class="subtitle">Planets orbit a central sun using GSAP's <code style="color:var(--gold)">MotionPathPlugin</code>. Each world follows an invisible SVG ellipse at its own speed and inclination.</p>
+
+  <svg id="orbital-svg" viewBox="-300 -300 600 600" xmlns="http://www.w3.org/2000/svg" aria-label="Orbital system">
+    <defs>
+      <filter id="sun-glow" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="12" result="b1"/>
+        <feGaussianBlur stdDeviation="4"  result="b2"/>
+        <feMerge><feMergeNode in="b1"/><feMergeNode in="b2"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="planet-glow" x="-80%" y="-80%" width="260%" height="260%">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <radialGradient id="sun-grad" cx="40%" cy="35%" r="60%">
+        <stop offset="0%"   stop-color="#fff7d6"/>
+        <stop offset="40%"  stop-color="#ffd166"/>
+        <stop offset="100%" stop-color="#ff6b00"/>
+      </radialGradient>
+    </defs>
+
+    <!-- Orbit paths -->
+    <ellipse id="orbit1" cx="0" cy="0" rx="80"  ry="40"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+    <ellipse id="orbit2" cx="0" cy="0" rx="130" ry="65"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+    <ellipse id="orbit3" cx="0" cy="0" rx="175" ry="90"  fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+    <ellipse id="orbit4" cx="0" cy="0" rx="220" ry="115" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+    <ellipse id="orbit5" cx="0" cy="0" rx="260" ry="140" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/>
+
+    <!-- Sun -->
+    <circle id="sun" cx="0" cy="0" r="28" fill="url(#sun-grad)" filter="url(#sun-glow)"/>
+
+    <!-- Trails -->
+    <g id="trails" opacity="0.25">
+      <circle id="trail1a" r="6"  fill="#00f0ff" opacity="0"/>
+      <circle id="trail1b" r="5"  fill="#00f0ff" opacity="0"/>
+      <circle id="trail2a" r="7"  fill="#06d6a0" opacity="0"/>
+      <circle id="trail2b" r="6"  fill="#06d6a0" opacity="0"/>
+      <circle id="trail3a" r="8"  fill="#ff6b6b" opacity="0"/>
+      <circle id="trail3b" r="6"  fill="#ff6b6b" opacity="0"/>
+      <circle id="trail4a" r="6"  fill="#ffd166" opacity="0"/>
+      <circle id="trail4b" r="5"  fill="#ffd166" opacity="0"/>
+      <circle id="trail5a" r="5"  fill="#e040fb" opacity="0"/>
+      <circle id="trail5b" r="4"  fill="#e040fb" opacity="0"/>
+    </g>
+
+    <!-- Planets -->
+    <circle id="planet1" r="8"  fill="#00f0ff" filter="url(#planet-glow)"/>
+    <circle id="planet2" r="10" fill="#06d6a0" filter="url(#planet-glow)"/>
+    <circle id="planet3" r="12" fill="#ff6b6b" filter="url(#planet-glow)"/>
+    <circle id="planet4" r="8"  fill="#ffd166" filter="url(#planet-glow)"/>
+    <circle id="planet5" r="7"  fill="#e040fb" filter="url(#planet-glow)"/>
+  </svg>
+
+  <div class="orbit-tags">
+    <span class="tag-gold">MotionPathPlugin</span>
+    <span class="tag-gold">SVG ellipse paths</span>
+    <span class="tag-gold">staggered timelines</span>
+  </div>
+</div>
+
+<section class="info-section">
+  <div class="info-inner">
+    <h2>How it works</h2>
+    <p>
+      Each planet is a bare <strong>&lt;circle&gt;</strong> element with no initial position.
+      GSAP's <strong>MotionPathPlugin</strong> takes an SVG element as the path and animates
+      another element's position along it. The ellipses are real SVG elements in the document
+      but rendered with near-zero opacity so they're invisible yet fully usable as paths.
+    </p>
+    <p>
+      Trail circles lag behind each planet by <strong>6% and 12%</strong> of the orbit duration
+      using <code style="color:var(--gold)">start: offset - lag</code>. Combined with reduced opacity,
+      this creates the illusion of a glowing comet trail without any canvas or custom drawing code.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong style="color:var(--text)">Reference SVG ellipses as paths</strong> — <code style="color:var(--gold)">motionPath: { path: '#orbit1', align: '#orbit1' }</code> tells GSAP to animate along the ellipse and keep the element centered on it.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong style="color:var(--text)">start/end offset for staggered entry</strong> — Each planet begins at a different progress point (0, 0.25, 0.5, 0.75) so the system looks populated from the start, not all launching from the same spot.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong style="color:var(--text)">Trail via lagged copies</strong> — Two additional circles per planet follow the same path but with <code style="color:var(--gold)">start - 0.06</code> and <code style="color:var(--gold)">start - 0.12</code> offset, plus reduced opacity for depth.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong style="color:var(--text)">Sun pulse</strong> — The central sun uses a simple <code style="color:var(--gold)">scale: 1.15</code> yoyo tween for the breathing glow effect, composited by the feGaussianBlur filter.</p>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag-gold">GSAP MotionPathPlugin</span>
+      <span class="tag-gold">SVG ellipse</span>
+      <span class="tag-gold">alignOrigin</span>
+      <span class="tag-gold">feGaussianBlur</span>
+      <span class="tag-gold">yoyo</span>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <a href="t5.html">← Spotlight</a>
+  <span class="page-indicator">06 / 08</span>
+  <a href="t7.html">Filter Gallery →</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/MotionPathPlugin.min.js"></script>
+<script>
+'use strict';
+gsap.registerPlugin(MotionPathPlugin);
+
+// Sun pulse
+gsap.to('#sun', {
+  scale: 1.15,
+  duration: 2,
+  repeat: -1,
+  yoyo: true,
+  ease: 'sine.inOut',
+  transformOrigin: '0 0'
+});
+
+const planetConfigs = [
+  { planet: '#planet1', orbit: '#orbit1', dur: 4,  start: 0,    trailA: '#trail1a', trailB: '#trail1b' },
+  { planet: '#planet2', orbit: '#orbit2', dur: 7,  start: 0.25, trailA: '#trail2a', trailB: '#trail2b' },
+  { planet: '#planet3', orbit: '#orbit3', dur: 11, start: 0.5,  trailA: '#trail3a', trailB: '#trail3b' },
+  { planet: '#planet4', orbit: '#orbit4', dur: 16, start: 0.75, trailA: '#trail4a', trailB: '#trail4b' },
+  { planet: '#planet5', orbit: '#orbit5', dur: 22, start: 0.1,  trailA: '#trail5a', trailB: '#trail5b' },
+];
+
+planetConfigs.forEach(({ planet, orbit, dur, start, trailA, trailB }) => {
+  gsap.to(planet, {
+    motionPath: {
+      path: orbit,
+      align: orbit,
+      alignOrigin: [0.5, 0.5],
+      start: start,
+      end: start + 1,
+      autoRotate: false,
+    },
+    duration: dur,
+    repeat: -1,
+    ease: 'none',
+  });
+
+  [trailA, trailB].forEach((trailId, ti) => {
+    const lag = (ti + 1) * 0.06;
+    const laggedStart = start - lag;
+    gsap.set(trailId, { opacity: 0.5 - ti * 0.15 });
+    gsap.to(trailId, {
+      motionPath: {
+        path: orbit,
+        align: orbit,
+        alignOrigin: [0.5, 0.5],
+        start: laggedStart,
+        end: laggedStart + 1,
+        autoRotate: false,
+      },
+      duration: dur,
+      repeat: -1,
+      ease: 'none',
+    });
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scroll Data Viz — SVG Animation Mastery</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #0f0f1a;
+      --surface2: #13131f;
+      --accent: #6c63ff;
+      --accent2: #00f0ff;
+      --text: #e8e8f0;
+      --text-muted: #6b6b8a;
+      --border: rgba(255,255,255,0.06);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 1.5rem; height: 52px;
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .back-btn, .nav-next {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.8rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s;
+    }
+    .back-btn:hover, .nav-next:hover { color: var(--text); }
+    .nav-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); }
+    .nav-title span { color: var(--accent); margin-right: 0.5rem; }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 60vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 80px 2rem 3rem;
+    }
+    .tech-badge {
+      display: inline-flex;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.25);
+      color: var(--accent);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900; letter-spacing: -0.03em; line-height: 1.05;
+      margin-bottom: 0.5rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero .subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-muted); max-width: 520px; margin: 0 auto;
+    }
+
+    /* ── CHART SECTION ── */
+    .chart-section {
+      padding: 4rem 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .chart-section-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent2);
+      margin-bottom: 1.5rem;
+    }
+    .bar-chart-area {
+      display: flex; align-items: flex-end; gap: 1rem;
+      height: 240px; padding: 0 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .bar-group {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; height: 100%; justify-content: flex-end;
+    }
+    .bar-value {
+      font-size: 0.75rem; font-weight: 700;
+      margin-bottom: 4px; color: var(--accent2);
+      font-variant-numeric: tabular-nums;
+    }
+    .bar-outer { width: 100%; height: 200px; display: flex; align-items: flex-end; }
+    .bar {
+      width: 100%; border-radius: 6px 6px 0 0;
+      transform: scaleY(0); transform-origin: bottom;
+    }
+    .bar-label { font-size: 0.7rem; color: var(--text-muted); margin-top: 8px; font-weight: 500; }
+    .chart-caption { text-align: right; font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; }
+
+    #line-chart-svg { width: 100%; max-width: 900px; margin-top: 2rem; }
+
+    /* ── INFO SECTION ── */
+    .info-section { background: var(--surface); padding: 5rem 2rem; }
+    .info-inner { max-width: 740px; margin: 0 auto; }
+    .info-inner h2 { font-size: clamp(1.5rem, 3.5vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .info-inner p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.75; margin-bottom: 1rem; }
+    .info-inner p strong { color: var(--text); }
+    .steps { margin-top: 2rem; display: grid; gap: 1rem; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num {
+      min-width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(108,99,255,0.12);
+      border: 1px solid rgba(108,99,255,0.25);
+      color: var(--accent);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; margin-top: 2px;
+    }
+    .step p { margin: 0; font-size: 0.875rem; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+    .tag {
+      background: rgba(108,99,255,0.1);
+      border: 1px solid rgba(108,99,255,0.2);
+      color: var(--accent);
+      font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.25rem 0.6rem; border-radius: 4px;
+    }
+    .page-nav {
+      background: var(--bg); border-top: 1px solid var(--border);
+      padding: 2rem; display: flex;
+      justify-content: space-between; align-items: center;
+    }
+    .page-nav a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1rem; border: 1px solid var(--border); border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .page-nav a:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .page-indicator { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="back-btn">← Gallery</a>
+  <div class="nav-title"><span>04</span>Scroll Data Viz</div>
+  <a href="t5.html" class="nav-next">Spotlight →</a>
+</nav>
+
+<div class="hero">
+  <div class="tech-badge">📊 Data Visualization</div>
+  <h1>Scroll-Driven <span>Charts</span></h1>
+  <p class="subtitle">Bars animate with GPU-composited <code style="color:var(--accent2)">scaleY()</code>. Counters race to their values. Line draws via <code style="color:var(--accent2)">stroke-dashoffset</code> — all ScrollTrigger-driven.</p>
+</div>
+
+<div class="chart-section">
+  <div class="chart-section-title">Weekly Downloads (millions) · JS Frameworks 2025</div>
+
+  <div class="bar-chart-area" id="bar-chart">
+    <div class="bar-group">
+      <div class="bar-value" id="bv0">0</div>
+      <div class="bar-outer">
+        <div class="bar" id="bar0" style="height:180px;background:linear-gradient(to top,#6c63ff,#9b94ff)"></div>
+      </div>
+      <div class="bar-label">React</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-value" id="bv1">0</div>
+      <div class="bar-outer">
+        <div class="bar" id="bar1" style="height:145px;background:linear-gradient(to top,#00f0ff,#7efff5)"></div>
+      </div>
+      <div class="bar-label">Vue</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-value" id="bv2">0</div>
+      <div class="bar-outer">
+        <div class="bar" id="bar2" style="height:130px;background:linear-gradient(to top,#ff6b6b,#ff9999)"></div>
+      </div>
+      <div class="bar-label">Svelte</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-value" id="bv3">0</div>
+      <div class="bar-outer">
+        <div class="bar" id="bar3" style="height:160px;background:linear-gradient(to top,#ffd166,#ffe8a3)"></div>
+      </div>
+      <div class="bar-label">Angular</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-value" id="bv4">0</div>
+      <div class="bar-outer">
+        <div class="bar" id="bar4" style="height:115px;background:linear-gradient(to top,#06d6a0,#7effd4)"></div>
+      </div>
+      <div class="bar-label">Solid</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-value" id="bv5">0</div>
+      <div class="bar-outer">
+        <div class="bar" id="bar5" style="height:95px;background:linear-gradient(to top,#f77f00,#ffb347)"></div>
+      </div>
+      <div class="bar-label">Qwik</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-value" id="bv6">0</div>
+      <div class="bar-outer">
+        <div class="bar" id="bar6" style="height:108px;background:linear-gradient(to top,#e040fb,#f48ffd)"></div>
+      </div>
+      <div class="bar-label">Preact</div>
+    </div>
+  </div>
+  <div class="chart-caption">★ Relative scale — illustrative data</div>
+
+  <svg id="line-chart-svg" viewBox="0 0 900 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%"   stop-color="#6c63ff"/>
+        <stop offset="50%"  stop-color="#00f0ff"/>
+        <stop offset="100%" stop-color="#ff6b6b"/>
+      </linearGradient>
+      <filter id="line-glow">
+        <feGaussianBlur stdDeviation="3" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <line x1="40" y1="20"  x2="40"  y2="190" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="40" y1="190" x2="870" y2="190" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+    <line x1="40" y1="140" x2="870" y2="140" stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="90"  x2="870" y2="90"  stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
+    <line x1="40" y1="40"  x2="870" y2="40"  stroke="rgba(255,255,255,0.04)" stroke-width="1" stroke-dasharray="4,4"/>
+    <text x="28" y="194" font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">0</text>
+    <text x="28" y="144" font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">25</text>
+    <text x="28" y="94"  font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">50</text>
+    <text x="28" y="44"  font-size="11" fill="rgba(255,255,255,0.25)" text-anchor="middle" font-family="Inter,sans-serif">75</text>
+    <text x="120" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Jan</text>
+    <text x="230" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Feb</text>
+    <text x="340" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Mar</text>
+    <text x="450" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Apr</text>
+    <text x="560" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">May</text>
+    <text x="670" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Jun</text>
+    <text x="780" y="210" font-size="11" fill="rgba(255,255,255,0.3)" text-anchor="middle" font-family="Inter,sans-serif">Jul</text>
+    <path id="line-path" stroke="url(#line-grad)" stroke-width="2.5" filter="url(#line-glow)"
+      d="M 120 160 C 150 155 180 130 230 120 C 270 112 300 95 340 85 C 375 76 410 70 450 60 C 490 50 520 48 560 42 C 600 36 635 40 670 55 C 705 69 740 80 780 72"/>
+    <circle class="line-dot" cx="120" cy="160" r="5" fill="#6c63ff" opacity="0"/>
+    <circle class="line-dot" cx="230" cy="120" r="5" fill="#8080ff" opacity="0"/>
+    <circle class="line-dot" cx="340" cy="85"  r="5" fill="#40c8e0" opacity="0"/>
+    <circle class="line-dot" cx="450" cy="60"  r="5" fill="#00f0ff" opacity="0"/>
+    <circle class="line-dot" cx="560" cy="42"  r="5" fill="#20e0b0" opacity="0"/>
+    <circle class="line-dot" cx="670" cy="55"  r="5" fill="#60d090" opacity="0"/>
+    <circle class="line-dot" cx="780" cy="72"  r="5" fill="#ff6b6b" opacity="0"/>
+  </svg>
+</div>
+
+<section class="info-section">
+  <div class="info-inner">
+    <h2>How it works</h2>
+    <p>
+      Both charts are triggered by <strong>ScrollTrigger</strong>: they animate in when the user
+      scrolls them into view and reverse out when scrolled past. This makes re-animation automatic
+      on re-scroll, perfect for presentations and demos.
+    </p>
+    <p>
+      The bar chart uses CSS <strong>transform: scaleY()</strong> starting from 0.
+      This is GPU-composited — no repaints, no layout shifts. Counter values use a GSAP object
+      tween pattern: animate a plain JS object's property and read it in <code style="color:var(--accent)">onUpdate</code>.
+    </p>
+    <p>
+      The line chart uses the same <strong>stroke-dashoffset</strong> trick as the circuit demo:
+      measure the path length, set it as both dasharray and offset, then tween offset to zero.
+      Data points pop in with <code style="color:var(--accent)">back.out</code> easing after the line finishes.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong style="color:var(--text)">ScrollTrigger timeline</strong> — Wrapping both bar and counter animations in a single timeline ensures they start together and can reverse cleanly.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong style="color:var(--text)">GPU-composited scaleY</strong> — CSS transforms run on the compositor thread. Zero bars start with <code style="color:var(--accent)">transform: scaleY(0)</code> set at authoring time, not injected by JS.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong style="color:var(--text)">Object counter pattern</strong> — <code style="color:var(--accent)">gsap.to(counterObj, { val: 42, onUpdate: () => el.textContent = Math.round(obj.val) + 'M' })</code> animates any number with any ease.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong style="color:var(--text)">Line chart path drawing</strong> — <code style="color:var(--accent)">path.getTotalLength()</code> + dashoffset tween with a staggered dot reveal creates a satisfying "plotting" effect.</p>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag">ScrollTrigger</span>
+      <span class="tag">scaleY transform</span>
+      <span class="tag">GSAP object tween</span>
+      <span class="tag">stroke-dashoffset</span>
+      <span class="tag">getTotalLength()</span>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <a href="t3.html">← Shape Morphing</a>
+  <span class="page-indicator">04 / 08</span>
+  <a href="t5.html">Spotlight →</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+
+const barData = [42, 34, 28, 38, 22, 18, 24];
+const bars = document.querySelectorAll('.bar');
+const barValues = document.querySelectorAll('.bar-value');
+const counters = Array.from(barValues).map(() => ({ val: 0 }));
+
+const barTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: '#bar-chart',
+    start: 'top 75%',
+    end: 'bottom 20%',
+    toggleActions: 'play none none reverse'
+  }
+});
+
+barTl.to(bars, {
+  scaleY: 1,
+  duration: 1,
+  stagger: 0.08,
+  ease: 'power3.out'
+});
+
+barData.forEach((val, i) => {
+  barTl.to(counters[i], {
+    val,
+    duration: 1,
+    ease: 'power2.out',
+    onUpdate: function() {
+      barValues[i].textContent = Math.round(counters[i].val) + 'M';
+    }
+  }, '<0.08');
+});
+
+const linePath = document.getElementById('line-path');
+const lineLen = linePath.getTotalLength();
+gsap.set(linePath, { strokeDasharray: lineLen, strokeDashoffset: lineLen });
+
+const lineTl = gsap.timeline({
+  scrollTrigger: {
+    trigger: '#line-chart-svg',
+    start: 'top 85%',
+    toggleActions: 'play none none reverse'
+  }
+});
+
+lineTl.to(linePath, { strokeDashoffset: 0, duration: 2, ease: 'power2.inOut' });
+lineTl.to('.line-dot', {
+  opacity: 1,
+  scale: 1.2,
+  duration: 0.4,
+  stagger: 0.15,
+  ease: 'back.out(2)',
+  transformOrigin: 'center'
+}, '-=0.8');
+</script>
+</body>
+</html>

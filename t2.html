@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circuit Drawing — SVG Animation Mastery</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #0f0f1a;
+      --surface2: #13131f;
+      --accent: #6c63ff;
+      --accent2: #00f0ff;
+      --text: #e8e8f0;
+      --text-muted: #6b6b8a;
+      --border: rgba(255,255,255,0.06);
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      height: 52px;
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .back-btn, .nav-next {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .back-btn:hover, .nav-next:hover { color: var(--text); }
+    .nav-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+    .nav-title span { color: var(--accent2); margin-right: 0.5rem; }
+
+    /* ── MAIN STAGE ── */
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 2rem 4rem;
+      text-align: center;
+      position: relative;
+    }
+    .stage::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,240,255,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(0,240,255,0.1);
+      border: 1px solid rgba(0,240,255,0.25);
+      color: var(--accent2);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+    .stage h1 {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+    }
+    .stage h1 span { color: var(--accent2); }
+    .stage .subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+    #circuit-svg {
+      width: 100%;
+      max-width: 900px;
+      height: auto;
+    }
+    .replay-btn {
+      margin-top: 2rem;
+      padding: 0.6rem 1.4rem;
+      background: transparent;
+      border: 1px solid rgba(0,240,255,0.3);
+      color: var(--accent2);
+      font-family: inherit;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .replay-btn:hover { background: rgba(0,240,255,0.08); border-color: rgba(0,240,255,0.5); }
+
+    /* ── INFO ── */
+    .info-section {
+      background: var(--surface);
+      padding: 5rem 2rem;
+    }
+    .info-inner {
+      max-width: 740px;
+      margin: 0 auto;
+    }
+    .info-inner h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .info-inner p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+    .info-inner p strong { color: var(--text); }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1.5rem;
+    }
+    .tag {
+      background: rgba(0,240,255,0.08);
+      border: 1px solid rgba(0,240,255,0.2);
+      color: var(--accent2);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+    .steps {
+      margin-top: 2rem;
+      display: grid;
+      gap: 1rem;
+    }
+    .step { display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num {
+      min-width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(0,240,255,0.1);
+      border: 1px solid rgba(0,240,255,0.25);
+      color: var(--accent2);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+    .step p { margin: 0; font-size: 0.875rem; }
+    .page-nav {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .page-nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .page-nav a:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .page-indicator { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="back-btn">← Gallery</a>
+  <div class="nav-title"><span>02</span>Circuit Drawing</div>
+  <a href="t3.html" class="nav-next">Morphing →</a>
+</nav>
+
+<div class="stage">
+  <div class="tech-badge">⚡ Path Drawing</div>
+  <h1>Circuit <span>Network</span></h1>
+  <p class="subtitle">SVG paths reveal themselves by animating <code style="color:var(--accent2)">stroke-dashoffset</code> from full path length to zero. Staggered with GSAP, glowing with SVG filters.</p>
+
+  <svg id="circuit-svg" viewBox="0 0 900 500" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Circuit diagram">
+    <defs>
+      <filter id="neon-glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="3" result="blur"/>
+        <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+      </filter>
+      <filter id="neon-glow-strong" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="6" result="blur1"/>
+        <feGaussianBlur stdDeviation="2" result="blur2"/>
+        <feMerge><feMergeNode in="blur1"/><feMergeNode in="blur2"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <g class="circuit-paths" filter="url(#neon-glow)" stroke="#00f0ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path class="cp" d="M 50 250 H 200"/>
+      <path class="cp" d="M 250 250 H 400"/>
+      <path class="cp" d="M 450 250 H 600"/>
+      <path class="cp" d="M 650 250 H 850"/>
+      <path class="cp" d="M 200 250 V 100"/>
+      <path class="cp" d="M 200 250 V 400"/>
+      <path class="cp" d="M 450 250 V 120"/>
+      <path class="cp" d="M 450 250 V 380"/>
+      <path class="cp" d="M 650 250 V 150"/>
+      <path class="cp" d="M 650 250 V 350"/>
+      <path class="cp" d="M 200 100 H 350 V 50 H 550"/>
+      <path class="cp" d="M 200 400 H 320 V 450 H 550 V 420"/>
+      <path class="cp" d="M 450 120 H 600 V 80 H 780"/>
+      <path class="cp" d="M 650 150 H 780 V 100"/>
+      <path class="cp" d="M 550 50 H 650 V 150"/>
+      <path class="cp" d="M 650 350 H 750 V 420 H 600"/>
+      <path class="cp" d="M 100 250 V 150 H 180"/>
+      <path class="cp" d="M 350 250 V 320 H 440"/>
+      <path class="cp" d="M 780 100 H 850 V 200"/>
+    </g>
+    <g class="circuit-nodes" filter="url(#neon-glow-strong)">
+      <circle class="cn" cx="200" cy="250" r="5" fill="#00f0ff"/>
+      <circle class="cn" cx="450" cy="250" r="5" fill="#00f0ff"/>
+      <circle class="cn" cx="650" cy="250" r="5" fill="#00f0ff"/>
+      <circle class="cn" cx="200" cy="100" r="4" fill="#7efff5"/>
+      <circle class="cn" cx="200" cy="400" r="4" fill="#7efff5"/>
+      <circle class="cn" cx="450" cy="120" r="4" fill="#7efff5"/>
+      <circle class="cn" cx="450" cy="380" r="4" fill="#7efff5"/>
+      <circle class="cn" cx="650" cy="150" r="4" fill="#7efff5"/>
+      <circle class="cn" cx="650" cy="350" r="4" fill="#7efff5"/>
+      <circle class="cn" cx="550" cy="50"  r="4" fill="#00f0ff"/>
+      <circle class="cn" cx="780" cy="100" r="4" fill="#7efff5"/>
+      <circle class="cn" cx="350" cy="50"  r="3" fill="#7efff5"/>
+      <circle class="cn" cx="320" cy="400" r="3" fill="#7efff5"/>
+      <rect class="cn" x="840" y="243" width="14" height="14" rx="2" fill="none" stroke="#00f0ff" stroke-width="1.5"/>
+      <rect class="cn" x="40"  y="243" width="14" height="14" rx="2" fill="none" stroke="#00f0ff" stroke-width="1.5"/>
+    </g>
+  </svg>
+
+  <button class="replay-btn" id="replay-btn">↺ Replay Animation</button>
+</div>
+
+<section class="info-section">
+  <div class="info-inner">
+    <h2>How it works</h2>
+    <p>
+      The trick is deceptively simple: set <strong>stroke-dasharray</strong> to the path's total length
+      (measured via <strong>getTotalLength()</strong>), then set <strong>stroke-dashoffset</strong> to the
+      same value. This makes the dash pattern push all strokes off-screen. Animating dashoffset to 0
+      "draws" the path.
+    </p>
+    <p>
+      GSAP staggers each path sequentially so circuits appear to spread outward from the source.
+      An SVG <strong>feGaussianBlur</strong> filter with <strong>feMerge</strong> composites a soft glow
+      halo beneath each stroke without any DOM overhead.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong style="color:var(--text)">Measure path lengths</strong> — <code style="color:var(--accent2)">path.getTotalLength()</code> returns the exact pixel length of any SVG path, including curves and arcs.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong style="color:var(--text)">Set dasharray = dashoffset = length</strong> — The dash is exactly as long as the path, but offset by the same amount, making the entire stroke invisible.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong style="color:var(--text)">Tween dashoffset to 0</strong> — GSAP animates the offset to zero, sliding the visible dash onto the path. <code style="color:var(--accent2)">stagger: 0.08</code> cascades each path 80ms apart.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong style="color:var(--text)">Nodes pop in with back.out easing</strong> — Junction circles scale from 0 to 1 using <code style="color:var(--accent2)">ease: 'back.out(2)'</code> for a satisfying snap, then pulse forever.</p>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag">stroke-dasharray</span>
+      <span class="tag">stroke-dashoffset</span>
+      <span class="tag">getTotalLength()</span>
+      <span class="tag">SVG feGaussianBlur</span>
+      <span class="tag">GSAP stagger</span>
+      <span class="tag">ScrollTrigger</span>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <a href="t1.html">← Liquid Morphing</a>
+  <span class="page-indicator">02 / 08</span>
+  <a href="t3.html">Shape Morphing →</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script>
+'use strict';
+gsap.registerPlugin(ScrollTrigger);
+
+const paths = document.querySelectorAll('.cp');
+const nodes = document.querySelectorAll('.cn');
+
+function setupDash() {
+  paths.forEach(p => {
+    const len = p.getTotalLength ? p.getTotalLength() : 200;
+    p.style.strokeDasharray = len;
+    p.style.strokeDashoffset = len;
+  });
+  gsap.set(nodes, { opacity: 0, scale: 0, transformOrigin: 'center' });
+}
+
+function runAnimation() {
+  const tl = gsap.timeline();
+  tl.to(paths, {
+    strokeDashoffset: 0,
+    duration: 1.2,
+    stagger: 0.08,
+    ease: 'power2.inOut'
+  });
+  tl.to(nodes, {
+    opacity: 1,
+    scale: 1,
+    duration: 0.4,
+    stagger: 0.06,
+    ease: 'back.out(2)'
+  }, '-=0.8');
+  return tl;
+}
+
+setupDash();
+
+// Auto-play after 1 second
+gsap.delayedCall(1, runAnimation);
+
+// Persistent node pulse (starts after initial animation)
+gsap.to('.cn[r="5"], .cn[r="4"]', {
+  scale: 1.4,
+  opacity: 0.6,
+  duration: 1.2,
+  repeat: -1,
+  yoyo: true,
+  stagger: 0.15,
+  ease: 'sine.inOut',
+  transformOrigin: 'center',
+  delay: 3
+});
+
+// Replay button
+document.getElementById('replay-btn').addEventListener('click', () => {
+  setupDash();
+  runAnimation();
+});
+</script>
+</body>
+</html>

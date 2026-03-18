@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shape Morphing — SVG Animation Mastery</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #0f0f1a;
+      --surface2: #13131f;
+      --accent: #6c63ff;
+      --accent3: #ff6b6b;
+      --text: #e8e8f0;
+      --text-muted: #6b6b8a;
+      --border: rgba(255,255,255,0.06);
+    }
+    body {
+      background: var(--surface);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      height: 52px;
+      background: rgba(10,10,15,0.88);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .back-btn, .nav-next {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+    .back-btn:hover, .nav-next:hover { color: var(--text); }
+    .nav-title { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em; color: var(--text-muted); }
+    .nav-title span { color: var(--accent3); margin-right: 0.5rem; }
+
+    .stage {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 2rem 4rem;
+      text-align: center;
+    }
+    .tech-badge {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255,107,107,0.1);
+      border: 1px solid rgba(255,107,107,0.3);
+      color: var(--accent3);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+      margin-bottom: 1.25rem;
+    }
+    .stage h1 {
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+    }
+    .stage h1 span { color: var(--accent3); }
+    .stage .subtitle {
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+    .morphing-stage {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+    }
+    .morph-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 20px;
+    }
+    .small-morph-group {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .small-morph-wrap { text-align: center; }
+    .small-morph-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+    .info-panel {
+      max-width: 280px;
+      text-align: left;
+    }
+    .info-panel h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #ffd166;
+      margin-bottom: 0.75rem;
+    }
+    .info-panel p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .info-panel p strong { color: var(--text); }
+    .small-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1.25rem;
+    }
+    .tag {
+      background: rgba(255,107,107,0.1);
+      border: 1px solid rgba(255,107,107,0.25);
+      color: var(--accent3);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+
+    .info-section {
+      background: var(--bg);
+      padding: 5rem 2rem;
+    }
+    .info-inner { max-width: 740px; margin: 0 auto; }
+    .info-inner h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .info-inner p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 1rem;
+    }
+    .info-inner p strong { color: var(--text); }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.5rem; }
+    .tag2 {
+      background: rgba(255,107,107,0.08);
+      border: 1px solid rgba(255,107,107,0.2);
+      color: var(--accent3);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+    }
+    .steps { margin-top: 2rem; display: grid; gap: 1rem; }
+    .step { display: flex; gap: 1rem; align-items: flex-start; }
+    .step-num {
+      min-width: 28px; height: 28px; border-radius: 50%;
+      background: rgba(255,107,107,0.1);
+      border: 1px solid rgba(255,107,107,0.25);
+      color: var(--accent3);
+      font-size: 0.7rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+    .step p { margin: 0; font-size: 0.875rem; }
+    .page-nav {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .page-nav a {
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.85rem; font-weight: 500;
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border); border-radius: 8px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .page-nav a:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+    .page-indicator { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; letter-spacing: 0.05em; }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="back-btn">← Gallery</a>
+  <div class="nav-title"><span>03</span>Shape Morphing</div>
+  <a href="t4.html" class="nav-next">Data Viz →</a>
+</nav>
+
+<div class="stage">
+  <div class="tech-badge">◈ Shape Morphing</div>
+  <h1>Path <span>Morphing</span></h1>
+  <p class="subtitle">Smooth continuous morphing by tweening the <code style="color:#ffd166">d</code> attribute. Every shape uses identical cubic bezier command counts.</p>
+
+  <div class="morphing-stage">
+    <div>
+      <svg id="main-morph-svg" viewBox="0 0 300 300" width="280" height="280">
+        <defs>
+          <radialGradient id="morph-grad" cx="50%" cy="50%" r="50%">
+            <stop id="morph-stop1" offset="0%" stop-color="#ff6b6b"/>
+            <stop id="morph-stop2" offset="100%" stop-color="#6c63ff" stop-opacity="0.5"/>
+          </radialGradient>
+          <filter id="morph-glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <path id="main-morph" fill="url(#morph-grad)" filter="url(#morph-glow)" opacity="0.9"
+          d="M 150 40
+             C 190 40 230 80 240 120
+             C 250 160 240 200 220 230
+             C 200 260 170 270 150 260
+             C 130 270 100 260 80 230
+             C 60 200 50 160 60 120
+             C 70 80 110 40 150 40 Z"/>
+      </svg>
+      <div class="morph-label" id="morph-shape-label">Circle</div>
+    </div>
+
+    <div class="info-panel">
+      <h3>How it works</h3>
+      <p>
+        Each morph target has <strong>exactly 6 cubic bezier (C) commands</strong>.
+        GSAP's attr tween interpolates between the <code style="color:#ffd166">d</code> attribute strings,
+        smoothly blending control points to create organic transitions.
+      </p>
+      <div class="small-tags">
+        <span class="tag">attr tween</span>
+        <span class="tag">cubic bezier</span>
+        <span class="tag">infinite loop</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="small-morph-group">
+    <div class="small-morph-wrap">
+      <svg viewBox="0 0 100 100" width="90" height="90">
+        <path id="small-morph-1" fill="#6c63ff" opacity="0.8"
+          d="M 50 15 C 65 15 80 30 80 50 C 80 65 65 80 50 85 C 35 80 20 65 20 50 C 20 30 35 15 50 15 Z"/>
+      </svg>
+      <div class="small-morph-label">Purple</div>
+    </div>
+    <div class="small-morph-wrap">
+      <svg viewBox="0 0 100 100" width="90" height="90">
+        <path id="small-morph-2" fill="#00f0ff" opacity="0.7"
+          d="M 50 15 C 62 15 78 30 78 50 C 78 65 62 78 50 85 C 38 78 22 65 22 50 C 22 30 38 15 50 15 Z"/>
+      </svg>
+      <div class="small-morph-label">Cyan</div>
+    </div>
+    <div class="small-morph-wrap">
+      <svg viewBox="0 0 100 100" width="90" height="90">
+        <path id="small-morph-3" fill="#ffd166" opacity="0.7"
+          d="M 50 15 C 64 15 79 29 79 50 C 79 66 64 79 50 85 C 36 79 21 66 21 50 C 21 29 36 15 50 15 Z"/>
+      </svg>
+      <div class="small-morph-label">Gold</div>
+    </div>
+  </div>
+</div>
+
+<section class="info-section">
+  <div class="info-inner">
+    <h2>How it works</h2>
+    <p>
+      SVG path morphing requires that both the start and end <strong>d attribute</strong> have the same
+      number and types of path commands. When command counts match, the browser (and GSAP) can
+      linearly interpolate each numeric parameter independently.
+    </p>
+    <p>
+      All four shapes here — circle, star, blob, hexagon — are built with exactly
+      <strong>6 cubic bezier (C) commands</strong> plus a closing Z. GSAP's
+      <strong>attr tween</strong> interpolates the raw string values, and the gradient stops
+      animate simultaneously for a synchronized color shift.
+    </p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <p><strong style="color:var(--text)">Design matching paths</strong> — Every morph target must have identical command sequences. "M → C C C C C C Z" must be the same structure in all shapes, only coordinates differ.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <p><strong style="color:var(--text)">GSAP attr tween</strong> — <code style="color:var(--accent3)">gsap.to(path, { attr: { d: newPath } })</code> tells GSAP to treat the path string as a set of interpolatable numbers.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <p><strong style="color:var(--text)">Chain with delayedCall</strong> — <code style="color:var(--accent3)">onComplete: () => gsap.delayedCall(0.8, morphNext)</code> creates a staggered loop with pause between transitions.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <p><strong style="color:var(--text)">Animate gradient stops simultaneously</strong> — Color shifts sync with shape changes by tweening the <code style="color:var(--accent3)">stop-color</code> attribute on gradient stops in parallel.</p>
+      </div>
+    </div>
+
+    <div class="tags">
+      <span class="tag2">SVG path d attribute</span>
+      <span class="tag2">GSAP attr tween</span>
+      <span class="tag2">cubic bezier</span>
+      <span class="tag2">radialGradient</span>
+      <span class="tag2">feGaussianBlur</span>
+    </div>
+  </div>
+</section>
+
+<div class="page-nav">
+  <a href="t2.html">← Circuit Drawing</a>
+  <span class="page-indicator">03 / 08</span>
+  <a href="t4.html">Data Viz →</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script>
+'use strict';
+const morphShapes = {
+  circle: `M 150 40 C 190 40 240 85 240 150 C 240 215 190 260 150 260 C 110 260 60 215 60 150 C 60 85 110 40 150 40 C 150 40 150 40 150 40 C 150 40 150 40 150 40 Z`,
+  star: `M 150 10 C 165 55 195 60 235 68 C 205 100 210 130 230 165 C 195 158 175 175 150 210 C 125 175 105 158 70 165 C 90 130 95 100 65 68 C 105 60 135 55 150 10 Z`,
+  blob: `M 150 25 C 210 20 265 60 270 120 C 275 180 240 235 195 255 C 150 275 90 265 55 225 C 20 185 25 120 45 78 C 65 35 95 30 150 25 Z`,
+  hexagon: `M 150 30 C 152 30 215 67 215 70 C 217 73 217 177 215 180 C 213 183 152 220 150 220 C 148 220 85 183 85 180 C 83 177 83 73 85 70 C 87 67 148 30 150 30 Z`,
+};
+
+const labels = ['Circle', 'Star', 'Blob', 'Hexagon'];
+const colors = [
+  { s1: '#ff6b6b', s2: '#6c63ff' },
+  { s1: '#ffd166', s2: '#ff6b6b' },
+  { s1: '#06d6a0', s2: '#00f0ff' },
+  { s1: '#6c63ff', s2: '#e040fb' },
+];
+
+const morphEl = document.getElementById('main-morph');
+const labelEl = document.getElementById('morph-shape-label');
+const stop1   = document.getElementById('morph-stop1');
+const stop2   = document.getElementById('morph-stop2');
+const shapeKeys = ['circle', 'star', 'blob', 'hexagon'];
+let idx = 0;
+
+function morphNext() {
+  idx = (idx + 1) % shapeKeys.length;
+  const key = shapeKeys[idx];
+  gsap.to(morphEl, {
+    duration: 1.8,
+    ease: 'power2.inOut',
+    attr: { d: morphShapes[key].replace(/\s+/g, ' ').trim() },
+    onComplete: () => {
+      labelEl.textContent = labels[idx];
+      gsap.delayedCall(0.8, morphNext);
+    }
+  });
+  gsap.to(stop1, { duration: 1.8, attr: { 'stop-color': colors[idx].s1 }, ease: 'power2.inOut' });
+  gsap.to(stop2, { duration: 1.8, attr: { 'stop-color': colors[idx].s2 }, ease: 'power2.inOut' });
+}
+
+gsap.delayedCall(1.0, morphNext);
+
+// Small morphs
+const smallShapes = [
+  {
+    id: 'small-morph-1',
+    shapes: [
+      'M 50 15 C 65 15 80 30 80 50 C 80 65 65 80 50 85 C 35 80 20 65 20 50 C 20 30 35 15 50 15 Z',
+      'M 50 10 C 58 25 80 28 88 45 C 96 62 82 78 68 85 C 54 92 36 92 24 83 C 12 74 8 56 16 40 C 24 24 42 -5 50 10 Z',
+      'M 50 15 C 70 10 88 28 88 50 C 88 72 70 88 50 88 C 30 88 12 72 12 50 C 12 28 30 20 50 15 Z',
+      'M 50 12 C 55 12 82 28 82 50 C 82 68 55 85 50 85 C 45 85 18 68 18 50 C 18 28 45 12 50 12 Z',
+    ],
+    dur: 2.2, delay: 0.3
+  },
+  {
+    id: 'small-morph-2',
+    shapes: [
+      'M 50 15 C 62 15 78 30 78 50 C 78 65 62 78 50 85 C 38 78 22 65 22 50 C 22 30 38 15 50 15 Z',
+      'M 50 8 C 66 22 85 22 88 45 C 91 65 72 84 55 88 C 38 92 18 80 13 62 C 8 44 18 20 35 12 C 42 8 44 -2 50 8 Z',
+      'M 50 18 C 75 10 92 35 88 58 C 84 80 65 90 50 88 C 35 86 15 75 12 55 C 9 35 25 12 50 18 Z',
+      'M 50 15 C 58 15 80 25 82 50 C 84 72 62 85 50 85 C 38 85 18 72 18 50 C 18 28 42 15 50 15 Z',
+    ],
+    dur: 3.0, delay: 0.8
+  },
+  {
+    id: 'small-morph-3',
+    shapes: [
+      'M 50 15 C 64 15 79 29 79 50 C 79 66 64 79 50 85 C 36 79 21 66 21 50 C 21 29 36 15 50 15 Z',
+      'M 50 10 C 60 10 80 22 82 42 C 84 62 70 82 50 88 C 30 94 12 78 10 58 C 8 38 20 18 35 12 C 40 10 40 10 50 10 Z',
+      'M 50 20 C 72 12 90 32 90 52 C 90 70 72 88 50 88 C 28 88 10 70 10 52 C 10 32 28 28 50 20 Z',
+      'M 50 14 C 55 14 82 30 82 50 C 82 67 55 85 50 85 C 45 85 18 67 18 50 C 18 30 45 14 50 14 Z',
+    ],
+    dur: 2.6, delay: 1.4
+  }
+];
+
+smallShapes.forEach(({ id, shapes, dur, delay }) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  let si = 0;
+  function nextSmall() {
+    si = (si + 1) % shapes.length;
+    gsap.to(el, {
+      duration: dur,
+      ease: 'power1.inOut',
+      attr: { d: shapes[si] },
+      onComplete: () => gsap.delayedCall(0.4, nextSmall)
+    });
+  }
+  gsap.delayedCall(delay, nextSmall);
+});
+</script>
+</body>
+</html>
